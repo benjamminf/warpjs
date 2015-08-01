@@ -1,4 +1,20 @@
-function normalizePath(path)
+/**
+ *
+ * @param svg
+ */
+function normalize(svg)
+{
+	// Convert each SVG shape to a path element, and pass all other style properties across
+
+
+	return svg;
+}
+
+/**
+ *
+ * @param path
+ */
+normalize.path = function(path)
 {
 	var x = 0;
 	var y = 0;
@@ -37,12 +53,14 @@ function normalizePath(path)
 				case 's': segments.replaceItem(path.createSVGPathSegCurvetoCubicSmoothAbs(x, y, x2, y2), i); break;
 				case 'q': segments.replaceItem(path.createSVGPathSegCurvetoQuadraticAbs(x, y, x1, y1), i); break;
 				case 't': segments.replaceItem(path.createSVGPathSegCurvetoQuadraticSmoothAbs(x, y), i); break;
+				// TODO Convert arc to bezier
 				case 'a': segments.replaceItem(path.createSVGPathSegArcAbs(x, y, segment.r1, segment.r2, segment.angle, segment.largeArcFlag, segment.sweepFlag), i); break;
+				// TODO Consider converting line segments to quadratic curves that have the control point midway through
 				case 'l': case 'h': case 'v': segments.replaceItem(path.createSVGPathSegLinetoAbs(x, y), i); break;
 				case 'z': case 'Z':
-					x = x0;
-					y = y0;
-					break;
+				x = x0;
+				y = y0;
+				break;
 			}
 		}
 
@@ -53,4 +71,43 @@ function normalizePath(path)
 			y0 = y;
 		}
 	}
-}
+};
+
+/**
+ *
+ * @param segment
+ */
+normalize.convert = function(segment)
+{
+	// TODO
+};
+
+normalize.convert.line = function(line)
+{
+	// TODO
+};
+
+normalize.convert.circle = function(arc)
+{
+	// TODO
+};
+
+normalize.convert.ellipse = function(arc)
+{
+	// TODO
+};
+
+normalize.convert.polygon = function(arc)
+{
+	// TODO
+};
+
+normalize.convert.polyline = function(arc)
+{
+	// TODO
+};
+
+normalize.convert.rect = function(arc)
+{
+	// TODO
+};

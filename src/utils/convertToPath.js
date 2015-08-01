@@ -1,4 +1,0 @@
-function convertToPath(shape)
-{
-
-}

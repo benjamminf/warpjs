@@ -1,40 +1,45 @@
-function SVGDistort(paths)
+/**
+ *
+ * @param svg
+ * @returns {SVGDistort}
+ * @constructor
+ */
+function SVGDistort(svg)
 {
 	if(!(this instanceof SVGDistort))
 	{
-		return new SVGDistort(paths);
+		return new SVGDistort(svg);
 	}
 
-	this.paths = paths;
+	normalize(svg);
+
+	this.paths = svg.children; // TODO Maybe copy array?
 	this.init();
 }
 
+/**
+ *
+ */
 SVGDistort.prototype.init = function()
 {
-	this.segments = [];
-	this.points = [];
+	this.originalSegments = [];
+	this.originalPoints = [];
 
 	for(var i = 0; i < this.paths.length; i++)
 	{
 		var path = this.paths[i];
 		var segments = path.segments;
 
-		normalizePath(path);
-
 		for(var j = 0; j < segments.numberOfItems; j++)
 		{
 			var segment = segments.getItem(j);
-			var type = segment.pathSegTypeAsLetter;
 
-			// If it's not a close path
-			if(type != 'Z' && type != 'z')
-			{
-				this.segments.push(segment);
+			this.originalSegments.push(segment);
 
-				this.points.push(Point.from(segment));
-				if('x1' in segment) this.points.push(Point.from(segment, 'x1', 'y1'));
-				if('x2' in segment) this.points.push(Point.from(segment, 'x2', 'y2'));
-			}
+			// Add points if applicable
+			if('x'  in segment) this.originalPoints.push(Point.from(segment));
+			if('x1' in segment) this.originalPoints.push(Point.from(segment, Point.CONTROL_1));
+			if('x2' in segment) this.originalPoints.push(Point.from(segment, Point.CONTROL_2));
 		}
 	}
 };

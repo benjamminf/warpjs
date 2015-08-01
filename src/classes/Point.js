@@ -1,3 +1,5 @@
+/* Constructor */
+
 /**
  *
  * @param x
@@ -7,22 +9,68 @@
 function Point(x, y)
 {
 	this.segment = {};
+	this.pointType = 0;
 	this.attrX = attrX || 'x';
-	this.attrY = attrY || 'x';
+	this.attrY = attrY || 'y';
 
 	this.position(x, y);
 }
 
-Point.fn = Point.prototype;
 
-Point.fn.update = function(segment, attrX, attrY)
+/* Static properties */
+
+Point.CONTROL_0 = 0;
+Point.CONTROL_1 = 1;
+Point.CONTROL_2 = 2;
+
+
+/* Static methods */
+
+/**
+ *
+ * @param segment
+ * @param pointType
+ * @returns {Point}
+ */
+Point.from = function(segment, pointType)
 {
-	this.segment = segment;
-	if(attrX) this.attrX = attrX;
-	if(attrY) this.attrY = attrY;
+	var point = new Point();
+	point.target(segment, pointType);
+
+	return point;
 };
 
-Point.fn.x = function(value)
+
+/* Methods */
+
+/**
+ *
+ * @param segment
+ * @param pointType
+ */
+Point.prototype.target = function(segment, pointType)
+{
+	this.segment = segment;
+	this.pointType = pointType | 0;
+
+	if(this.pointType > 0)
+	{
+		this.attrX = 'x' + pointType;
+		this.attrY = 'y' + pointType;
+	}
+	else
+	{
+		this.attrX = 'x';
+		this.attrY = 'y';
+	}
+};
+
+/**
+ *
+ * @param value
+ * @returns {*}
+ */
+Point.prototype.x = function(value)
 {
 	if(!isNaN(value))
 	{
@@ -32,7 +80,12 @@ Point.fn.x = function(value)
 	return this.segment[this.attrX];
 };
 
-Point.fn.y = function(value)
+/**
+ *
+ * @param value
+ * @returns {*}
+ */
+Point.prototype.y = function(value)
 {
 	if(!isNaN(value))
 	{
@@ -42,18 +95,16 @@ Point.fn.y = function(value)
 	return this.segment[this.attrY];
 };
 
-Point.fn.position = function(x, y)
+/**
+ *
+ * @param x
+ * @param y
+ * @returns {{x: *, y: *}}
+ */
+Point.prototype.position = function(x, y)
 {
 	return {
 		x: this.x(x),
 		y: this.y(y)
 	};
-};
-
-Point.from = function(segment, attrX, attrY)
-{
-	var point = new Point();
-	point.update(segment, attrX, attrY);
-
-	return point;
 };
