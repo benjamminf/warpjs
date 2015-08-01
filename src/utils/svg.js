@@ -9,3 +9,13 @@ function SVG(tag, attributes)
 
 	return el;
 }
+
+SVG.attribute = function(element, name)
+{
+	if(element[name] instanceof SVGAnimatedLength)
+	{
+		return element[name].baseVal.value;
+	}
+
+	return element.getAttribute(name);
+};

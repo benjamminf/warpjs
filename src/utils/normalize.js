@@ -11,7 +11,7 @@ function normalize(svg)
 }
 
 /**
- *
+ * TODO Convert Line (L/l) to quadratics
  * @param path
  */
 normalize.path = function(path)
@@ -79,35 +79,62 @@ normalize.path = function(path)
  */
 normalize.convert = function(segment)
 {
-	// TODO
+	var path = this.path(this.convert[segment.tagName](segment));
+
+
 };
+
+normalize.convert.KAPPA = 0.55228474;
 
 normalize.convert.line = function(line)
 {
-	// TODO
+	var x1 = SVG.attribute(line, 'x1');
+	var y1 = SVG.attribute(line, 'y1');
+	var x2 = SVG.attribute(line, 'x2');
+	var y2 = SVG.attribute(line, 'y2');
+
+	return SVG('path', {
+		d: [
+			'M', x1, y1,
+			'L', x2, y2
+		].join(' ')
+	});
 };
 
-normalize.convert.circle = function(arc)
+normalize.convert.circle = function(circle)
+{
+	var cx = SVG.attribute(circle, 'cx');
+	var cy = SVG.attribute(circle, 'cy');
+	var r = SVG.attribute(circle, 'r');
+	var cd = r * this.KAPPA;
+
+	return SVG('path', {
+		d: [
+			'M', cx, cy - r,
+			'C', cx + cd, cy - r,  cx + r,  cy - cd, cx + r, cy,
+			'C', cx + r,  cy + cd, cx + cd, cy + r,  cx,     cy + r,
+			'C', cx - cd, cy + r,  cx - r,  cy + cd, cx - r, cy,
+			'C', cx - r,  cy - cd, cx - cd, cy - r,  cx,     cy - r
+		].join(' ')
+	});
+};
+
+normalize.convert.ellipse = function(ellipse)
 {
 	// TODO
 };
 
-normalize.convert.ellipse = function(arc)
+normalize.convert.polygon = function(polygon)
 {
 	// TODO
 };
 
-normalize.convert.polygon = function(arc)
+normalize.convert.polyline = function(polyline)
 {
 	// TODO
 };
 
-normalize.convert.polyline = function(arc)
-{
-	// TODO
-};
-
-normalize.convert.rect = function(arc)
+normalize.convert.rect = function(rect)
 {
 	// TODO
 };
