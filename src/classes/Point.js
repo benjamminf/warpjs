@@ -12,6 +12,8 @@ function Point(x, y)
 	this.pointType = 0;
 	this.attrX = attrX || 'x';
 	this.attrY = attrY || 'y';
+	this.origX = 0;
+	this.origY = 0;
 
 	this.position(x, y);
 }
@@ -55,14 +57,17 @@ Point.prototype.target = function(segment, pointType)
 
 	if(this.pointType > 0)
 	{
-		this.attrX = 'x' + pointType;
-		this.attrY = 'y' + pointType;
+		this.attrX = 'x' + this.pointType;
+		this.attrY = 'y' + this.pointType;
 	}
 	else
 	{
 		this.attrX = 'x';
 		this.attrY = 'y';
 	}
+
+	this.origX = this.segment[this.attrX];
+	this.origY = this.segment[this.attrY];
 };
 
 /**
