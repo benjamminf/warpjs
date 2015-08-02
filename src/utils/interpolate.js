@@ -8,7 +8,17 @@ function interpolate(path, segment, order)
 {
 	// Remember to check for close path types
 
+	var points;
 
+	switch(segment.pathSegTypeAsLetter)
+	{
+		case 'L':
+
+			points = [
+				[]
+			];
+			break;
+	}
 }
 
 

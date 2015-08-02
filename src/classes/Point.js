@@ -10,8 +10,8 @@ function Point(x, y)
 {
 	this.segment = {};
 	this.pointType = 0;
-	this.attrX = attrX || 'x';
-	this.attrY = attrY || 'y';
+	this.attrX = 'x';
+	this.attrY = 'y';
 	this.origX = 0;
 	this.origY = 0;
 

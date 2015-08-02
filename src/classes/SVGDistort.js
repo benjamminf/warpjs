@@ -13,7 +13,7 @@ function SVGDistort(svg)
 
 	normalize(svg);
 
-	this.paths = svg.children; // TODO Maybe copy array?
+	this.paths = svg.querySelectorAll('path');
 	this.init();
 }
 
@@ -28,7 +28,7 @@ SVGDistort.prototype.init = function()
 	for(var i = 0; i < this.paths.length; i++)
 	{
 		var path = this.paths[i];
-		var segments = path.segments;
+		var segments = path.pathSegList;
 
 		for(var j = 0; j < segments.numberOfItems; j++)
 		{
@@ -41,5 +41,14 @@ SVGDistort.prototype.init = function()
 			if('x1' in segment) this.originalPoints.push(Point.from(segment, Point.CONTROL_1));
 			if('x2' in segment) this.originalPoints.push(Point.from(segment, Point.CONTROL_2));
 		}
+	}
+};
+
+SVGDistort.prototype.withPoints = function(callback, types)
+{
+	for(var i = 0; i < this.originalPoints.length; i++)
+	{
+		var point = this.originalPoints[i];
+		callback.call(point, point.x(), point.y());
 	}
 };

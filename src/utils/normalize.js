@@ -231,6 +231,7 @@ normalize.createLineSegment = function(path, points)
 };
 
 /**
+ * https://svg.codeplex.com/SourceControl/latest#Source/Paths/SvgArcSegment.cs
  *
  * @param sx
  * @param sy
