@@ -22,8 +22,8 @@ function SVGDistort(svg)
  */
 SVGDistort.prototype.init = function()
 {
-	this.originalSegments = [];
-	this.originalPoints = [];
+	this.origSegments = [];
+	this.origPoints = [];
 
 	for(var i = 0; i < this.paths.length; i++)
 	{
@@ -34,21 +34,21 @@ SVGDistort.prototype.init = function()
 		{
 			var segment = segments.getItem(j);
 
-			this.originalSegments.push(segment);
+			this.origSegments.push(segment);
 
 			// Add points if applicable
-			if('x'  in segment) this.originalPoints.push(Point.from(segment));
-			if('x1' in segment) this.originalPoints.push(Point.from(segment, Point.CONTROL_1));
-			if('x2' in segment) this.originalPoints.push(Point.from(segment, Point.CONTROL_2));
+			if('x'  in segment) this.origPoints.push(Point.from(segment));
+			if('x1' in segment) this.origPoints.push(Point.from(segment, Point.CONTROL_1));
+			if('x2' in segment) this.origPoints.push(Point.from(segment, Point.CONTROL_2));
 		}
 	}
 };
 
 SVGDistort.prototype.withPoints = function(callback, types)
 {
-	for(var i = 0; i < this.originalPoints.length; i++)
+	for(var i = 0; i < this.origPoints.length; i++)
 	{
-		var point = this.originalPoints[i];
+		var point = this.origPoints[i];
 		callback.call(point, point.x(), point.y());
 	}
 };
