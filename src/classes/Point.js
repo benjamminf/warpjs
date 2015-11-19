@@ -1,115 +1,45 @@
-/* Constructor */
-
-/**
- *
- * @param x
- * @param y
- * @constructor
- */
-function Point(x, y)
+function Point(x, y, type)
 {
-	this.segment = {};
-	this.pointType = 0;
-	this.attrX = 'x';
-	this.attrY = 'y';
-	this.origX = 0;
-	this.origY = 0;
+	this._x = 0;
+	this._y = 0;
+	this._type = Point.NORMAL;
 
-	this.position(x, y);
+	this.x(x);
+	this.y(y);
+	this.type(type);
 }
 
+Point.NORMAL  = Point[1] = 1;
+Point.CONTROL = Point[2] = 2;
 
-/* Static properties */
+var fn = Point.prototype;
 
-Point.CONTROL_0 = 0;
-Point.CONTROL_1 = 1;
-Point.CONTROL_2 = 2;
-
-
-/* Static methods */
-
-/**
- *
- * @param segment
- * @param pointType
- * @returns {Point}
- */
-Point.from = function(segment, pointType)
+fn.x = function(x)
 {
-	var point = new Point();
-	point.target(segment, pointType);
-
-	return point;
-};
-
-
-/* Methods */
-
-/**
- *
- * @param segment
- * @param pointType
- */
-Point.prototype.target = function(segment, pointType)
-{
-	this.segment = segment;
-	this.pointType = pointType | 0;
-
-	if(this.pointType > 0)
+	if(typeof x === 'number')
 	{
-		this.attrX = 'x' + this.pointType;
-		this.attrY = 'y' + this.pointType;
-	}
-	else
-	{
-		this.attrX = 'x';
-		this.attrY = 'y';
+		this._x = x;
 	}
 
-	this.origX = this.segment[this.attrX];
-	this.origY = this.segment[this.attrY];
+	return this._x;
 };
 
-/**
- *
- * @param value
- * @returns {*}
- */
-Point.prototype.x = function(value)
+fn.y = function(y)
 {
-	if(!isNaN(value))
+	if(typeof y === 'number')
 	{
-		this.segment[this.attrX] = value;
+		this._y = y;
 	}
 
-	return this.segment[this.attrX];
+	return this._y;
 };
 
-/**
- *
- * @param value
- * @returns {*}
- */
-Point.prototype.y = function(value)
+fn.type = function(type)
 {
-	if(!isNaN(value))
+	if(Point[type])
 	{
-		this.segment[this.attrY] = value;
+		this._type = type;
 	}
 
-	return this.segment[this.attrY];
-};
-
-/**
- *
- * @param x
- * @param y
- * @returns {{x: *, y: *}}
- */
-Point.prototype.position = function(x, y)
-{
-	return {
-		x: this.x(x),
-		y: this.y(y)
-	};
+	return this._type;
 };
