@@ -24,7 +24,7 @@ function Piece(/* points... */)
 			break;
 
 		default:
-			throw new Error('Not enough points to form a piece were supplied');
+			throw new Error('Need either three or four points to form a piece');
 	}
 
 	if(pointStart.type() !== Point.NORMAL)
