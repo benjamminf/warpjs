@@ -7,6 +7,9 @@ function Point(x, y, type)
 	this.x(x);
 	this.y(y);
 	this.type(type);
+
+	this._restX = this.x();
+	this._restY = this.y();
 }
 
 Point.NORMAL  = Point[1] = 1;
@@ -19,6 +22,7 @@ fn.x = function(x)
 	if(typeof x === 'number')
 	{
 		this._x = x;
+		this[0] = x;
 	}
 
 	return this._x;
@@ -29,9 +33,30 @@ fn.y = function(y)
 	if(typeof y === 'number')
 	{
 		this._y = y;
+		this[1] = y;
 	}
 
 	return this._y;
+};
+
+fn.restX = function(x)
+{
+	if(typeof x === 'number')
+	{
+		this._restX = x;
+	}
+
+	return this._restX;
+};
+
+fn.restY = function(y)
+{
+	if(typeof y === 'number')
+	{
+		this._restY = y;
+	}
+
+	return this._restY;
 };
 
 fn.type = function(type)
