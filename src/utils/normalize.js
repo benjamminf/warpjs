@@ -23,9 +23,7 @@ function normalize(svg)
 }
 
 /**
- * TODO Convert lines to quadratics
- * TODO Convert arcs to cubics
- * TODO Clean up
+ * TODO Replace close path types with an extra line back home
  *
  * @param path
  * @param smoothLines
