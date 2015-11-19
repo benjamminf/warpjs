@@ -1,16 +1,21 @@
 function Segment(/* points... */)
 {
-	Piece.apply(this, arguments);
+	var piece;
 
-	for(var i = 0; i < this._points.length; i++)
+	switch(arguments.length)
 	{
-		if(!(this._points[i] instanceof FixedPoint))
+		case 3: piece = new Piece(arguments[0], arguments[1], arguments[2]); break;
+		case 4: piece = new Piece(arguments[0], arguments[1], arguments[2], arguments[3]); break;
+		default: throw new Error('Need either three or four points to form a piece');
+	}
+
+	for(var i = 0; i < arguments.length; i++)
+	{
+		if(!(arguments[i] instanceof FixedPoint))
 		{
 			throw new Error('All points must be instances of FixedPoint');
 		}
 	}
 
-	// TODO pieces
-
-	this._pieces = [];
+	this._pieces = [piece];
 }
