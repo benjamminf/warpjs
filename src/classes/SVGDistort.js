@@ -13,5 +13,14 @@ function SVGDistort(svg)
 
 	normalize(svg);
 
-	this.paths = svg.querySelectorAll('path');
+	var pathElements = svg.querySelectorAll('path');
+
+	this._paths = [];
+
+	for(var i = 0; i < pathElements.length; i++)
+	{
+		var path = Path.fromElement(pathElements[i]);
+
+		console.log(path.toString());
+	}
 }
