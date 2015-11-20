@@ -19,3 +19,39 @@ function Segment(/* points... */)
 
 	this._pieces = [piece];
 }
+
+var fn = Segment.prototype;
+
+fn.interpolate = function(threshold)
+{
+	// TODO
+	// Looks through pieces and interpolates them if they need to be
+};
+
+fn.extrapolate = function(threshold)
+{
+	// TODO
+	// Looks through pieces and extrapolates them if they need to be
+};
+
+fn.autopolate = function(threshold)
+{
+
+	this.extrapolate(threshold);
+	this.interpolate(threshold);
+};
+
+fn.toString = function(includeMove)
+{
+	includeMove = (includeMove === true);
+
+	var s = [];
+
+	for(var i = 0; i < this._pieces.length; i++)
+	{
+		var piece = this._pieces[i];
+		s.push(piece.toString(i === 0 && includeMove));
+	}
+
+	return s.join(' ');
+};
