@@ -77,3 +77,27 @@ fn.interpolate = function()
 	// Also, it only modifies the start and end points from this point as they are shared between
 	// points. DON'T FORGET THIS!
 };
+
+fn.toString = function(includeMove)
+{
+	includeMove = (includeMove === true);
+
+	var point;
+	var s = [];
+
+	if(includeMove)
+	{
+		point = this.point(0);
+		s.push('M', point.x(), point.y());
+	}
+
+	s.push(this.type() === Piece.QUADRATIC ? 'Q' : 'C');
+
+	for(var i = 1; i < this._points.length; i++)
+	{
+		point = this.point(1);
+		s.push(point.x(), point.y());
+	}
+
+	return s.join(' ');
+};
