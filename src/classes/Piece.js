@@ -39,12 +39,8 @@ function Piece(/* points... */)
 	if(pointControl2 && pointControl2.type() !== Point.CONTROL)
 		throw new Error('Third point must be of CONTROL type');
 
-	points.push(pointStart);
-	points.push(pointControl1);
-
-	if(pointControl2)
-		points.push(pointControl2);
-
+	points.push(pointStart, pointControl1);
+	if(pointControl2) points.push(pointControl2);
 	points.push(pointEnd);
 
 	this._points = points;
@@ -62,7 +58,20 @@ var fn = Piece.prototype;
 
 fn.point = function(index)
 {
-	return this._points[index | 0];
+	index = (index | 0) % this._points.length;
+	index += (index < 0 ? this._points.length : 0);
+
+	return this._points[index];
+};
+
+fn.startPoint = function()
+{
+	return this.point(0);
+};
+
+fn.endPoint = function()
+{
+	return this.point(-1);
 };
 
 fn.type = function()
@@ -87,16 +96,16 @@ fn.toString = function(includeMove)
 
 	if(includeMove)
 	{
-		point = this.point(0);
-		s.push('M', point.x(), point.y());
+		point = this.startPoint();
+		s.push('M', point.toString());
 	}
 
 	s.push(this.type() === Piece.QUADRATIC ? 'Q' : 'C');
 
 	for(var i = 1; i < this._points.length; i++)
 	{
-		point = this.point(1);
-		s.push(point.x(), point.y());
+		point = this.point(i);
+		s.push(point.toString());
 	}
 
 	return s.join(' ');

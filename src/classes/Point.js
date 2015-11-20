@@ -68,3 +68,8 @@ fn.type = function(type)
 
 	return this._type;
 };
+
+fn.toString = function()
+{
+	return this._x + ' ' + this._y;
+};

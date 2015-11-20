@@ -22,6 +22,16 @@ function Segment(/* points... */)
 
 var fn = Segment.prototype;
 
+fn.startPoint = function()
+{
+	return this._pieces[0].startPoint();
+};
+
+fn.endPoint = function()
+{
+	return this._pieces[this._pieces.length - 1].endPoint();
+};
+
 fn.interpolate = function(threshold)
 {
 	// TODO
@@ -36,7 +46,6 @@ fn.extrapolate = function(threshold)
 
 fn.autopolate = function(threshold)
 {
-
 	this.extrapolate(threshold);
 	this.interpolate(threshold);
 };
