@@ -1,5 +1,7 @@
 function Point(x, y, type)
 {
+	this._id = Point._ids++;
+
 	this._x = 0;
 	this._y = 0;
 	this._type = Point.NORMAL;
@@ -11,6 +13,8 @@ function Point(x, y, type)
 	this._restX = this.x();
 	this._restY = this.y();
 }
+
+Point._ids = 0;
 
 Point.NORMAL  = Point[1] = 1;
 Point.CONTROL = Point[2] = 2;
@@ -72,4 +76,9 @@ fn.type = function(type)
 fn.toString = function()
 {
 	return this._x + ' ' + this._y;
+};
+
+fn.hashCode = function()
+{
+	return this._id;
 };

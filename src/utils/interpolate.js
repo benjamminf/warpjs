@@ -1,34 +1,10 @@
 /**
  *
- * @param path
- * @param segment
- * @param order
+ * @param p Segment: [StartPoint[x,y], ControlPoint[x,y]..., EndPoint[x,y]]
+ * @param t [0-1]
+ * @returns Segments [Segment, Segment]
  */
-function interpolate(path, segment, order)
-{
-	// Remember to check for close path types
-
-	var points;
-
-	switch(segment.pathSegTypeAsLetter)
-	{
-		case 'L':
-
-			points = [
-				[]
-			];
-			break;
-	}
-}
-
-
-/**
- *
- * @param p
- * @param t
- * @returns {*[]}
- */
-interpolate.divide = function(p, t)
+function interpolate(p, t)
 {
 	var seg0 = [];
 	var seg1 = [];
@@ -61,7 +37,7 @@ interpolate.divide = function(p, t)
 	}
 
 	return [seg0, seg1];
-};
+}
 
 /**
  *
@@ -77,7 +53,7 @@ interpolate.compute = function(p, n)
 	while(segs.length < n)
 	{
 		seg = segs[segs.length - 1];
-		div = this.divide(seg, 1 / (n - segs.length + 1));
+		div = this(seg, 1 / (n - segs.length + 1));
 
 		segs[segs.length - 1] = div[0];
 		segs.push(div[1]);

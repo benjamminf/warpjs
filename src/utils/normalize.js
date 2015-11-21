@@ -126,10 +126,10 @@ normalize.path = function(path, smoothLines)
 
 		if(segment.pathSegTypeAsLetter === 'A')
 		{
-			startPoint = this.getEndPoint(segments.getItem(i - 1));
+			startPoint = segments.getItem(i - 1);
 
 			var arcSegs = this.arc(
-				startPoint[0], startPoint[1],
+				startPoint.x, startPoint.y,
 				segment.r1, segment.r2,
 				segment.angle,
 				segment.largeArcFlag,
@@ -170,28 +170,16 @@ normalize.path = function(path, smoothLines)
 
 			if(segment.pathSegTypeAsLetter === 'L')
 			{
-				startPoint = this.getEndPoint(segments.getItem(i - 1));
+				startPoint = segments.getItem(i - 1);
 
 				segments.replaceItem(path.createSVGPathSegCurvetoQuadraticAbs(
 					segment.x, segment.y,
-					(startPoint[0] + segment.x) / 2,
-					(startPoint[1] + segment.y) / 2
+					(startPoint.x + segment.x) / 2,
+					(startPoint.y + segment.y) / 2
 				), i);
 			}
 		}
 	}
-};
-
-normalize.getEndPoint = function(segment)
-{
-	if(segment)
-	{
-		if('x2' in segment) return [segment.x2, segment.y2];
-		if('x1' in segment) return [segment.x1, segment.y1];
-		if('x'  in segment) return [segment.x,  segment.y];
-	}
-
-	return [0, 0];
 };
 
 /**

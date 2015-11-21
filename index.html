@@ -5,50 +5,47 @@
 </head>
 <body>
 <svg id="svg" xmlns="http://www.w3.org/2000/svg" width="400px" height="400px" viewBox="0 0 400 400">
-	<path d="M 0 60 L 60 60 A 30 30 0 0 1 60 120" fill="green" stroke-width="2"/>
+	<path d="M 0 60 L 60 60 A 30 30 0 0 1 60 120 L 0 60" fill="green" stroke-width="2"/>
 </svg>
 <script src="src/utils/svg.js"></script>
 <script src="src/utils/interpolate.js"></script>
 <script src="src/utils/normalize.js"></script>
 <script src="src/classes/Point.js"></script>
+<script src="src/classes/FixedPoint.js"></script>
+<script src="src/classes/Piece.js"></script>
+<script src="src/classes/Segment.js"></script>
+<script src="src/classes/Path.js"></script>
 <script src="src/classes/SVGDistort.js"></script>
 <script>
 
 	var RADIUS = 20;
-
 	var svg = document.getElementById('svg');
 	var distort = SVGDistort(svg);
-
 	var originX = svg.viewBox.baseVal.x;
 	var originY = svg.viewBox.baseVal.y;
-
 	var mouseX = 0;
 	var mouseY = 0;
-
 	window.addEventListener('mousemove', function(e)
 	{
 		mouseX = e.clientX - svg.offsetLeft;
 		mouseY = e.clientY - svg.offsetTop;
 	});
-
 	function frame()
 	{
 		distort.withPoints(function(x, y)
 		{
 			var pointX = x - originX;
 			var pointY = y - originY;
-
 			var deltaX = mouseX - pointX;
 			var deltaY = mouseY - pointY;
 			var delta = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-			this.x(this.origX - (RADIUS * deltaX) / delta);
-			this.y(this.origY - (RADIUS * deltaY) / delta);
+			this.x(this.restX() - (RADIUS * deltaX) / delta);
+			this.y(this.restY() - (RADIUS * deltaY) / delta);
 		});
 
 		requestAnimationFrame(frame);
 	}
-
 	frame();
 
 </script>

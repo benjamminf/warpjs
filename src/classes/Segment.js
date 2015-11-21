@@ -1,17 +1,11 @@
-function Segment(/* points... */)
+function Segment(points)
 {
-	var piece;
+	var args = (points && points.length ? points : arguments);
+	var piece = new Piece(args);
 
-	switch(arguments.length)
+	for(var i = 0; i < args.length; i++)
 	{
-		case 3: piece = new Piece(arguments[0], arguments[1], arguments[2]); break;
-		case 4: piece = new Piece(arguments[0], arguments[1], arguments[2], arguments[3]); break;
-		default: throw new Error('Need either three or four points to form a piece');
-	}
-
-	for(var i = 0; i < arguments.length; i++)
-	{
-		if(!(arguments[i] instanceof FixedPoint))
+		if(!(args[i] instanceof FixedPoint))
 		{
 			throw new Error('All points must be instances of FixedPoint');
 		}
@@ -34,8 +28,26 @@ fn.endPoint = function()
 
 fn.interpolate = function(threshold)
 {
-	// TODO
-	// Looks through pieces and interpolates them if they need to be
+	if(threshold <= 0.001)
+	{
+		throw new Error('Threshold is far too small and will result in either very poor performance or an infinite loop');
+	}
+
+	for(var i = 0; i < this._pieces.length; i++)
+	{
+		var piece = this._pieces[i];
+
+		if(piece.delta() > threshold)
+		{
+			var pieces = piece.interpolate();
+
+			this._pieces[i] = pieces[0];
+			this._pieces.splice(i + 1, 0, pieces[1]);
+
+			// Step back so the new pieces can be recursively interpolated
+			i--;
+		}
+	}
 };
 
 fn.extrapolate = function(threshold)

@@ -1,6 +1,7 @@
-function Path(segments)
+function Path(segments, threshold)
 {
 	this._segments = [];
+	this._threshold = isNaN(threshold) ? Path.DEFAULT_THRESHOLD : threshold;
 
 	if(segments && segments.length)
 	{
@@ -10,6 +11,8 @@ function Path(segments)
 		}
 	}
 }
+
+Path.DEFAULT_THRESHOLD = 10;
 
 Path.fromElement = function(element)
 {
@@ -74,6 +77,47 @@ fn.addSegment = function(segment)
 	}
 
 	this._segments.push(segment);
+};
+
+fn.points = function()
+{
+	var pointsMap = {};
+	var points = [];
+
+	// TODO Maybe offload these loops to their respective classes?
+	for(var i = 0; i < this._segments.length; i++)
+	{
+		var segment = this._segments[i];
+
+		for(var j = 0; j < segment._pieces.length; j++)
+		{
+			var piece = segment._pieces[j];
+
+			for(var k = 0; k < piece._points.length; k++)
+			{
+				var point = piece._points[k];
+				var hash = point.hashCode();
+
+				if(!pointsMap.hasOwnProperty(hash))
+				{
+					pointsMap[hash] = point;
+					points.push(point);
+				}
+			}
+		}
+	}
+
+	return points;
+};
+
+// Private?
+fn.interpolate = function()
+{
+	for(var i = 0; i < this._segments.length; i++)
+	{
+		var segment = this._segments[i];
+		segment.interpolate(this._threshold);
+	}
 };
 
 fn.toString = function()
