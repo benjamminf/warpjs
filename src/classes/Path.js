@@ -1,7 +1,8 @@
-function Path(segments, threshold)
+function Path(segments, interThreshold, extraThreshold)
 {
 	this._segments = [];
-	this._threshold = isNaN(threshold) ? Path.DEFAULT_THRESHOLD : threshold;
+	this._interThreshold = isNaN(interThreshold) ? Path.DEFAULT_INTERPOLATION_THRESHOLD : interThreshold;
+	this._extraThreshold = isNaN(extraThreshold) ? Path.DEFAULT_EXTRAPOLATION_THRESHOLD : extraThreshold;
 
 	if(segments && segments.length)
 	{
@@ -12,7 +13,8 @@ function Path(segments, threshold)
 	}
 }
 
-Path.DEFAULT_THRESHOLD = 10;
+Path.DEFAULT_INTERPOLATION_THRESHOLD = 10;
+Path.DEFAULT_EXTRAPOLATION_THRESHOLD = 2.5;
 
 Path.fromElement = function(element)
 {
@@ -116,7 +118,17 @@ fn.interpolate = function()
 	for(var i = 0; i < this._segments.length; i++)
 	{
 		var segment = this._segments[i];
-		segment.interpolate(this._threshold);
+		segment.interpolate(this._interThreshold);
+	}
+};
+
+// Private?
+fn.extrapolate = function()
+{
+	for(var i = 0; i < this._segments.length; i++)
+	{
+		var segment = this._segments[i];
+		segment.extrapolate(this._extraThreshold);
 	}
 };
 

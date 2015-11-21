@@ -1,5 +1,6 @@
 function Piece(points)
 {
+	// TODO arguments variable sometimes keeps arguments[0] as empty array! What!?
 	var args = (points && points.length ? points : arguments);
 
 	points = [];
@@ -53,7 +54,110 @@ Piece.CUBIC     = Piece[4] = 4;
 
 Piece.extrapolate = function(piece1, piece2)
 {
-	// TODO Join two pieces together. This'll be fun...
+	if(piece1.endPoint() !== piece2.startPoint())
+	{
+		throw new Error('Second piece must be joined to the first piece.');
+	}
+
+	if(piece1.type() !== piece2.type())
+	{
+		throw new Error('Pieces must be of the same type.');
+	}
+
+	var startPoint = piece1.startPoint();
+	var endPoint = piece2.endPoint();
+	var controlPointL, controlPointR, controlPoint;
+
+	var joiningFixed = startPoint instanceof FixedPoint && endPoint instanceof FixedPoint;
+
+	switch(piece1.type())
+	{
+		case Piece.QUADRATIC:
+
+			controlPointL = piece1.point(1);
+			controlPointR = piece2.point(1);
+
+			if(controlPointL instanceof FixedPoint)
+			{
+				controlPoint = controlPointL;
+			}
+			else if(controlPointR instanceof FixedPoint)
+			{
+				controlPoint = controlPointR;
+			}
+			else
+			{
+				controlPoint = new Point(0, 0, Point.CONTROL);
+			}
+
+			if(joiningFixed)
+			{
+				controlPoint.restX(controlPoint.origX());
+				controlPoint.restY(controlPoint.origY());
+			}
+			else
+			{
+				controlPoint.restX((controlPointL.restX() + controlPointR.restX()) / 2);
+				controlPoint.restY((controlPointL.restY() + controlPointR.restY()) / 2);
+			}
+
+			controlPoint.x((controlPointL.x() + controlPointR.x()) / 2);
+			controlPoint.y((controlPointL.y() + controlPointR.y()) / 2);
+
+			return new Piece([startPoint, controlPoint, endPoint]);
+
+			break;
+		case Piece.CUBIC:
+
+			var controlPointL1 = piece1.point(1);
+			var controlPointL2 = piece1.point(2);
+			var controlPointR1 = piece2.point(1);
+			var controlPointR2 = piece2.point(2);
+
+			if(controlPointL1 instanceof FixedPoint)
+			{
+				controlPointL = controlPointL1;
+			}
+			else
+			{
+				controlPointL = new Point(0, 0, Point.CONTROL);
+			}
+
+			if(controlPointR2 instanceof FixedPoint)
+			{
+				controlPointR = controlPointR2;
+			}
+			else
+			{
+				controlPointR = new Point(0, 0, Point.CONTROL);
+			}
+
+			if(joiningFixed)
+			{
+				controlPointL.restX(controlPointL.origX());
+				controlPointL.restY(controlPointL.origY());
+				controlPointR.restX(controlPointR.origX());
+				controlPointR.restY(controlPointR.origY());
+			}
+			else
+			{
+				controlPointL.restX((controlPointL1.restX() + controlPointL2.restX()) / 2);
+				controlPointL.restY((controlPointL1.restY() + controlPointL2.restY()) / 2);
+				controlPointR.restX((controlPointR1.restX() + controlPointR2.restX()) / 2);
+				controlPointR.restY((controlPointR1.restY() + controlPointR2.restY()) / 2);
+			}
+
+			controlPointL.x((controlPointL1.x() + controlPointL2.x()) / 2);
+			controlPointL.y((controlPointL1.y() + controlPointL2.y()) / 2);
+			controlPointR.x((controlPointR1.x() + controlPointR2.x()) / 2);
+			controlPointR.y((controlPointR1.y() + controlPointR2.y()) / 2);
+
+			return new Piece([startPoint, controlPointL, controlPointR, endPoint]);
+
+			break;
+	}
+
+	return false;
 };
 
 var fn = Piece.prototype;
@@ -81,6 +185,8 @@ fn.type = function()
 	return Piece[this._points.length];
 };
 
+// TODO This should actually calculate the arc length of the curve rather than just the linear distance between
+// the start and end. Simple way would be divide path into n segments (probably two)
 fn.delta = function()
 {
 	var start = this.startPoint();
@@ -125,27 +231,31 @@ fn.interpolate = function()
 		for(j = 0; j < pointsCount; j++)
 		{
 			point = points[j];
-			primPoint = primPiece[j];
-			primRestPoint = primRestPiece[j];
 
-			// Make sure fixed points are preserved and not overridden
-			if((j < pointsCount / 2) === (i === 0) && point instanceof FixedPoint)
+			if(!(i === 0 && j === 0) && !(i === 1 && j === pointsCount - 1))
 			{
-				point.x(primPoint[0]);
-				point.y(primPoint[1]);
-				point.restX(primRestPoint[0]);
-				point.restY(primRestPoint[1]);
-			}
-			// Make sure last point on first piece is shared with first point on second piece
-			else if(i === 1 && j === 0)
-			{
-				point = pieces[0].endPoint();
-			}
-			else
-			{
-				point = new Point(primPoint[0], primPoint[1], point.type());
-				point.restX(primRestPoint[0]);
-				point.restY(primRestPoint[1]);
+				primPoint = primPiece[j];
+				primRestPoint = primRestPiece[j];
+
+				// Make sure fixed points are preserved and not overridden
+				if((j < pointsCount / 2) === (i === 0) && point instanceof FixedPoint)
+				{
+					point.x(primPoint[0]);
+					point.y(primPoint[1]);
+					point.restX(primRestPoint[0]);
+					point.restY(primRestPoint[1]);
+				}
+				// Make sure last point on first piece is shared with first point on second piece
+				else if(i === 1 && j === 0)
+				{
+					point = pieces[0].endPoint();
+				}
+				else
+				{
+					point = new Point(primPoint[0], primPoint[1], point.type());
+					point.restX(primRestPoint[0]);
+					point.restY(primRestPoint[1]);
+				}
 			}
 
 			piecePoints.push(point);

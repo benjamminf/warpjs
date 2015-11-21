@@ -42,7 +42,7 @@ fn.interpolate = function(threshold)
 			var pieces = piece.interpolate();
 
 			this._pieces[i] = pieces[0];
-			this._pieces.splice(i + 1, 0, pieces[1]);
+			this._pieces.splice(i + 1, 0, pieces[1]); // TODO this increases complexity to n^2, try replacing this by building a new array
 
 			// Step back so the new pieces can be recursively interpolated
 			i--;
@@ -52,14 +52,27 @@ fn.interpolate = function(threshold)
 
 fn.extrapolate = function(threshold)
 {
-	// TODO
-	// Looks through pieces and extrapolates them if they need to be
-};
+	var priorPiece = this._pieces[0];
+	var newPieces = [priorPiece];
 
-fn.autopolate = function(threshold)
-{
-	this.extrapolate(threshold);
-	this.interpolate(threshold);
+	for(var i = 1; i < this._pieces.length; i++)
+	{
+		var piece = this._pieces[i];
+
+		if(piece.delta() < threshold)
+		{
+			piece = Piece.extrapolate(priorPiece, piece);
+			newPieces[newPieces.length - 1] = piece;
+		}
+		else
+		{
+			newPieces.push(piece);
+		}
+
+		priorPiece = piece;
+	}
+
+	this._pieces = newPieces;
 };
 
 fn.toString = function(includeMove)

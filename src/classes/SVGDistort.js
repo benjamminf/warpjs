@@ -67,6 +67,8 @@ fn.withPoints = function(callback)
 			}
 		}
 
+		// If dynamic interpolation is enabled...
+		path.extrapolate();
 		path.interpolate();
 
 		element.setAttribute('d', path.toString());
