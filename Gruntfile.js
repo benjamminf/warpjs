@@ -12,16 +12,16 @@ module.exports = function(grunt)
 				src: [
 					'src/start.frag',
 
-					'utils/svg.js',
-					'utils/interpolate.js',
-					'utils/normalize.js',
+					'src/utils/svg.js',
+					'src/utils/interpolate.js',
+					'src/utils/normalize.js',
 
-					'classes/Point.js',
-					'classes/FixedPoint.js',
-					'classes/Piece.js',
-					'classes/Segment.js',
-					'classes/Path.js',
-					'classes/DVG.js',
+					'src/classes/Point.js',
+					'src/classes/FixedPoint.js',
+					'src/classes/Piece.js',
+					'src/classes/Segment.js',
+					'src/classes/Path.js',
+					'src/classes/DVG.js',
 
 					'src/main.js',
 					'src/end.frag'
