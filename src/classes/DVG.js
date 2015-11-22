@@ -4,14 +4,14 @@
  * @param mode
  * @param interThreshold
  * @param extraThreshold
- * @returns {SVGDistort}
+ * @returns {DVG}
  * @constructor
  */
-function SVGDistort(svg, mode, interThreshold, extraThreshold)
+function DVG(svg, mode, interThreshold, extraThreshold)
 {
-	if(!(this instanceof SVGDistort))
+	if(!(this instanceof DVG))
 	{
-		return new SVGDistort(svg, mode, interThreshold, extraThreshold);
+		return new DVG(svg, mode, interThreshold, extraThreshold);
 	}
 
 	normalize(svg);
@@ -19,9 +19,9 @@ function SVGDistort(svg, mode, interThreshold, extraThreshold)
 	var pathElements = svg.querySelectorAll('path');
 
 	this._paths = [];
-	this._mode = (mode === undefined ? SVGDistort.STATIC_INTERPOLATION : mode);
-	this._interThreshold = isNaN(interThreshold) ? SVGDistort.DEFAULT_INTERPOLATION_THRESHOLD : interThreshold;
-	this._extraThreshold = isNaN(extraThreshold) ? SVGDistort.DEFAULT_EXTRAPOLATION_THRESHOLD : extraThreshold;
+	this._mode = (mode === undefined ? DVG.STATIC_INTERPOLATION : mode);
+	this._interThreshold = isNaN(interThreshold) ? DVG.DEFAULT_INTERPOLATION_THRESHOLD : interThreshold;
+	this._extraThreshold = isNaN(extraThreshold) ? DVG.DEFAULT_EXTRAPOLATION_THRESHOLD : extraThreshold;
 
 	for(var i = 0; i < pathElements.length; i++)
 	{
@@ -38,14 +38,14 @@ function SVGDistort(svg, mode, interThreshold, extraThreshold)
 	}
 }
 
-SVGDistort.STATIC_INTERPOLATION  = 1;
-SVGDistort.DYNAMIC_INTERPOLATION = 2;
-SVGDistort.DYNAMIC_AUTOPOLATION  = 3;
+DVG.STATIC_INTERPOLATION  = 1;
+DVG.DYNAMIC_INTERPOLATION = 2;
+DVG.DYNAMIC_AUTOPOLATION  = 3;
 
-SVGDistort.DEFAULT_INTERPOLATION_THRESHOLD = 10;
-SVGDistort.DEFAULT_EXTRAPOLATION_THRESHOLD = 2.5;
+DVG.DEFAULT_INTERPOLATION_THRESHOLD = 10;
+DVG.DEFAULT_EXTRAPOLATION_THRESHOLD = 2.5;
 
-var fn = SVGDistort.prototype;
+var fn = DVG.prototype;
 
 fn.withPoints = function(callback)
 {
@@ -82,11 +82,11 @@ fn.withPoints = function(callback)
 
 		switch(this._mode)
 		{
-			case SVGDistort.DYNAMIC_INTERPOLATION:
+			case DVG.DYNAMIC_INTERPOLATION:
 				path.interpolate(this._interThreshold);
 				break;
 
-			case SVGDistort.DYNAMIC_AUTOPOLATION:
+			case DVG.DYNAMIC_AUTOPOLATION:
 				path.extrapolate(this._extraThreshold);
 				path.interpolate(this._interThreshold);
 				break;
