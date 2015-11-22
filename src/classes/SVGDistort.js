@@ -1,14 +1,17 @@
 /**
  *
  * @param svg
+ * @param mode
+ * @param interThreshold
+ * @param extraThreshold
  * @returns {SVGDistort}
  * @constructor
  */
-function SVGDistort(svg)
+function SVGDistort(svg, mode, interThreshold, extraThreshold)
 {
 	if(!(this instanceof SVGDistort))
 	{
-		return new SVGDistort(svg);
+		return new SVGDistort(svg, mode, interThreshold, extraThreshold);
 	}
 
 	normalize(svg);
@@ -16,13 +19,16 @@ function SVGDistort(svg)
 	var pathElements = svg.querySelectorAll('path');
 
 	this._paths = [];
+	this._mode = (mode === undefined ? SVGDistort.STATIC_INTERPOLATION : mode);
+	this._interThreshold = isNaN(interThreshold) ? SVGDistort.DEFAULT_INTERPOLATION_THRESHOLD : interThreshold;
+	this._extraThreshold = isNaN(extraThreshold) ? SVGDistort.DEFAULT_EXTRAPOLATION_THRESHOLD : extraThreshold;
 
 	for(var i = 0; i < pathElements.length; i++)
 	{
 		var element = pathElements[i];
 		var path = Path.fromElement(element);
 
-		path.interpolate();
+		path.interpolate(this._interThreshold);
 		element.setAttribute('d', path.toString());
 
 		this._paths.push({
@@ -31,6 +37,13 @@ function SVGDistort(svg)
 		});
 	}
 }
+
+SVGDistort.STATIC_INTERPOLATION  = 1;
+SVGDistort.DYNAMIC_INTERPOLATION = 2;
+SVGDistort.DYNAMIC_AUTOPOLATION  = 3;
+
+SVGDistort.DEFAULT_INTERPOLATION_THRESHOLD = 10;
+SVGDistort.DEFAULT_EXTRAPOLATION_THRESHOLD = 2.5;
 
 var fn = SVGDistort.prototype;
 
@@ -67,9 +80,17 @@ fn.withPoints = function(callback)
 			}
 		}
 
-		// If dynamic interpolation is enabled...
-		path.extrapolate();
-		path.interpolate();
+		switch(this._mode)
+		{
+			case SVGDistort.DYNAMIC_INTERPOLATION:
+				path.interpolate(this._interThreshold);
+				break;
+
+			case SVGDistort.DYNAMIC_AUTOPOLATION:
+				path.extrapolate(this._extraThreshold);
+				path.interpolate(this._interThreshold);
+				break;
+		}
 
 		element.setAttribute('d', path.toString());
 	}
