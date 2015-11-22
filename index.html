@@ -46,7 +46,7 @@
 
 	var RADIUS = 20;
 	var svg = document.getElementById('svg');
-	var distort = SVGDistort(svg);
+	var distort = SVGDistort(svg, SVGDistort.DYNAMIC_AUTOPOLATION);
 	var originX = svg.viewBox.baseVal.x;
 	var originY = svg.viewBox.baseVal.y;
 	var mouseX = 0;
