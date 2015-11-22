@@ -1,8 +1,7 @@
 module.exports = function(grunt)
 {
-	var pkg = grunt.file.readJSON('package.json');
-
 	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 
 		concat: {
 			options: {
@@ -26,7 +25,7 @@ module.exports = function(grunt)
 					'src/main.js',
 					'src/end.frag'
 				],
-				dest: 'dist/dvg.js'
+				dest: 'dist/dvg-es6.js'
 			}
 		},
 
@@ -37,7 +36,19 @@ module.exports = function(grunt)
 			},
 			dist: {
 				files: {
-					'dist/app.js': 'src/app.js'
+					'dist/dvg.js': 'dist/dvg-es6.js'
+				}
+			}
+		},
+
+		uglify: {
+			options: {
+				sourceMap: true,
+				banner: '/*! <%= pkg.name %> <%= pkg.version %> */'
+			},
+			dist: {
+				files: {
+					'dist/dvg.min.js' : 'dist/dvg.js'
 				}
 			}
 		}
@@ -45,6 +56,7 @@ module.exports = function(grunt)
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-babel');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
-	grunt.registerTask('default', ['concat', 'babel']);
+	grunt.registerTask('default', ['concat', 'babel', 'uglify']);
 };
