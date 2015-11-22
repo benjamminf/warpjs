@@ -33,21 +33,13 @@
 </g>
 </svg>
 
-<script src="src/utils/svg.js"></script>
-<script src="src/utils/interpolate.js"></script>
-<script src="src/utils/normalize.js"></script>
-<script src="src/classes/Point.js"></script>
-<script src="src/classes/FixedPoint.js"></script>
-<script src="src/classes/Piece.js"></script>
-<script src="src/classes/Segment.js"></script>
-<script src="src/classes/Path.js"></script>
-<script src="src/classes/SVGDistort.js"></script>
+<script src="dist/dvg.min.js"></script>
 <script>
 
 	var RADIUS = 25;
 
 	var svg = document.getElementById('svg');
-	var distort = SVGDistort(svg, SVGDistort.DYNAMIC_INTERPOLATION);
+	var distort = new DVG(svg, DVG.DYNAMIC_INTERPOLATION);
 	var originX = svg.viewBox.baseVal.x;
 	var originY = svg.viewBox.baseVal.y;
 	var mouseX = 0;
