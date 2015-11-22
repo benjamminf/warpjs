@@ -6,7 +6,7 @@
 	}
 	else
 	{
-		root.SVGDistort = factory();
+		root.DVG = factory();
 	}
 }(this, function()
 {
