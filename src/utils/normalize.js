@@ -355,7 +355,9 @@ normalize.arc.angle = function(ux, uy, vx, vy)
  */
 normalize.convert = function(shape)
 {
-	var path = this.path(this.convert[shape.tagName](shape));
+	var path = this.convert[shape.tagName](shape);
+
+	normalize.path(path);
 
 	for(var i = 0; i < shape.attributes.length; i++)
 	{
