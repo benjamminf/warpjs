@@ -2,6 +2,38 @@
 <html>
 <head>
 <title>SVG Distort</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			overflow: hidden;
+		}
+		#svg {
+			cursor: crosshair;
+		}
+
+		#svg:hover + #cursor {
+			opacity: 1;
+		}
+
+		#cursor {
+			pointer-events: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			margin-top: -50px;
+			margin-left: -50px;
+			width: 100px;
+			height: 100px;
+			background-color: rgba(0, 0, 0, 0.1);
+			border-radius: 50%;
+			opacity: 0;
+			transition: opacity 0.1s;
+		}
+	</style>
 </head>
 <body>
 <svg version="1.1" id="svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -32,12 +64,18 @@
 	<rect x="827.5" y="164" class="st3" width="16.5" height="118.5"/>
 </g>
 </svg>
-
-<script src="dist/dvg.min.js"></script>
+<div id="cursor"></div>
+<div>
+	<label for="brush">Brush size:</label>
+	<input id="brush" type="range" min="0" max="400" value="30">
+	<button id="reset">Reset</button>
+</div>
+<script src="../dist/dvg.min.js"></script>
 <script>
 
-	var RADIUS = 25;
+	var EASING = 0.2;
 
+	var cursor = document.getElementById('cursor');
 	var svg = document.getElementById('svg');
 	var distort = new DVG(svg, DVG.DYNAMIC_INTERPOLATION);
 	var originX = svg.viewBox.baseVal.x;
@@ -49,11 +87,21 @@
 	var mouseDeltaX = 0;
 	var mouseDeltaY = 0;
 
+	var brush = document.getElementById('brush');
+	var button = document.getElementById('reset');
+	var resetting = false;
+
+	button.addEventListener('click', function(e)
+	{
+		resetting = true;
+	});
+
 	var smudging = false;
 
 	window.addEventListener('mousedown', function(e)
 	{
 		smudging = true;
+		resetting = false;
 	});
 
 	window.addEventListener('mouseup', function(e)
@@ -65,6 +113,8 @@
 	{
 		mouseX = e.clientX - svg.offsetLeft;
 		mouseY = e.clientY - svg.offsetTop;
+
+		cursor.style.transform = 'translate(' + mouseX + 'px,' + mouseY + 'px) scale(' + (brush.value / 100) + ')';
 
 		mouseDeltaX = mouseX - lastMouseX;
 		mouseDeltaY = mouseY - lastMouseY;
@@ -82,11 +132,17 @@
 		var deltaY = mouseY - pointY;
 		var delta = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-		if(delta <= RADIUS)
+		if(delta <= brush.value)
 		{
-			this.x(this.x() + mouseDeltaX * ((RADIUS - delta) / RADIUS));
-			this.y(this.y() + mouseDeltaY * ((RADIUS - delta) / RADIUS));
+			this.x(this.x() + mouseDeltaX * ((brush.value - delta) / brush.value));
+			this.y(this.y() + mouseDeltaY * ((brush.value - delta) / brush.value));
 		}
+	}
+
+	function reset(x, y)
+	{
+		this.x(x * (1 - EASING) + this.restX() * EASING);
+		this.y(y * (1 - EASING) + this.restY() * EASING);
 	}
 
 	function frame()
@@ -104,6 +160,10 @@
 			{
 				mouseDeltaY = 0;
 			}
+		}
+		else if(resetting)
+		{
+			distort.withPoints(reset);
 		}
 
 		requestAnimationFrame(frame);
