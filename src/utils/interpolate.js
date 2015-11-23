@@ -38,26 +38,3 @@ function interpolate(p, t)
 
 	return [seg0, seg1];
 }
-
-/**
- *
- * @param p
- * @param n
- * @returns {*[]}
- */
-interpolate.compute = function(p, n)
-{
-	var segs = [p];
-	var seg, div;
-
-	while(segs.length < n)
-	{
-		seg = segs[segs.length - 1];
-		div = this(seg, 1 / (n - segs.length + 1));
-
-		segs[segs.length - 1] = div[0];
-		segs.push(div[1]);
-	}
-
-	return segs;
-};
