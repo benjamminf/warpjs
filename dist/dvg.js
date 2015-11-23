@@ -1336,6 +1336,30 @@ DVG.DEFAULT_EXTRAPOLATION_THRESHOLD = 2.5;
 
 var fn = DVG.prototype;
 
+fn.interpolate = function()
+{
+	for(var m = 0; m < this._paths.length; m++)
+	{
+		var element = this._paths[m].element;
+		var path = this._paths[m].path;
+
+		path.interpolate(this._interThreshold);
+		element.setAttribute('d', path.toString());
+	}
+};
+
+fn.extrapolate = function()
+{
+	for(var m = 0; m < this._paths.length; m++)
+	{
+		var element = this._paths[m].element;
+		var path = this._paths[m].path;
+
+		path.extrapolate(this._extraThreshold);
+		element.setAttribute('d', path.toString());
+	}
+};
+
 fn.withPoints = function(callback)
 {
 	var pointsMap = {};
