@@ -119,3 +119,13 @@ fn.withPoints = function(callback)
 		element.setAttribute('d', path.toString());
 	}
 };
+
+fn.addValue = function(label, value)
+{
+	value = isNaN(value) ? 0 : value;
+
+	this.withPoints(function()
+	{
+		this.value(label, value);
+	});
+};

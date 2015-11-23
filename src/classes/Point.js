@@ -1,6 +1,7 @@
 function Point(x, y, type)
 {
 	this._id = Point._ids++;
+	this._values = {};
 
 	this._x = 0;
 	this._y = 0;
@@ -71,6 +72,16 @@ fn.type = function(type)
 	}
 
 	return this._type;
+};
+
+fn.value = function(label, value)
+{
+	if(typeof value === 'number')
+	{
+		this._values[label] = y;
+	}
+
+	return this._values[label];
 };
 
 fn.toString = function()
