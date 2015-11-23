@@ -25,19 +25,7 @@ module.exports = function(grunt)
 					'src/main.js',
 					'src/end.frag'
 				],
-				dest: 'dist/dvg-es6.js'
-			}
-		},
-
-		babel: {
-			options: {
-				sourceMap: true,
-				presets: ['es2015']
-			},
-			dist: {
-				files: {
-					'dist/dvg.js': 'dist/dvg-es6.js'
-				}
+				dest: 'dist/dvg.js'
 			}
 		},
 
@@ -55,8 +43,7 @@ module.exports = function(grunt)
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-babel');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
-	grunt.registerTask('default', ['concat', 'babel', 'uglify']);
+	grunt.registerTask('default', ['concat', 'uglify']);
 };
