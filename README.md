@@ -17,7 +17,7 @@ distort.withPoints(function(x, y)
 
 ## Demos
 
-- [Smudging tool](smudge.html)
+- [Smudging tool](http://codepen.io/benjamminf/full/GpaKGV/)
 - [Black hole effect](blackhole.html)
 
 ## How it works
