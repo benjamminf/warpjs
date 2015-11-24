@@ -18,11 +18,13 @@ distort.withPoints(function(x, y)
 ## Demos
 
 - [Smudging tool](http://codepen.io/benjamminf/full/GpaKGV/)
-- [Black hole effect](blackhole.html)
+- [Twirling effect](http://codepen.io/benjamminf/full/yYWowL/)
+- [Black hole effect](http://codepen.io/benjamminf/pen/Xbymvm)
 
 ## How it works
 
 DVG has three phases; normalisation, interpolation/extrapolation, and application.
+
 
 #### Normalisation
 
