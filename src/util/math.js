@@ -1,6 +1,24 @@
 /**
  *
  * @param p [StartPoint{x,y}, ControlPoint{x,y}..., EndPoint{x,y}]
+ * @returns {number}
+ */
+export function magnitude(p)
+{
+	// TODO: Calculate the arc length of the curve rather than the linear distance between the start and end
+
+	const start = p[0]
+	const end = p[p.length - 1]
+
+	const dx = end.x - start.x
+	const dy = end.y - start.y
+
+	return Math.sqrt(dx * dx + dy * dy)
+}
+
+/**
+ *
+ * @param p [StartPoint{x,y}, ControlPoint{x,y}..., EndPoint{x,y}]
  * @param t [0-1]
  * @returns {*[]}
  */
@@ -40,6 +58,31 @@ export function split(p, t = 0.5)
 	}
 
 	return [seg0, seg1]
+}
+
+/**
+ *
+ * @param p [StartPoint{x,y}, ControlPoint{x,y}..., EndPoint{x,y}]
+ * @param threshold
+ * @returns {Array}
+ */
+export function divider(p, threshold = 10)
+{
+	const segs = []
+
+	for(let seg of split(p))
+	{
+		if(magnitude(seg) < threshold)
+		{
+			segs.push(...divider(seg, threshold))
+		}
+		else
+		{
+			segs.push(seg)
+		}
+	}
+
+	return segs
 }
 
 /**

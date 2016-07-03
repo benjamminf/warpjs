@@ -1,5 +1,7 @@
 import Point from 'point'
-import {split} from 'util/math'
+import {magnitude, split, divider} from 'util/math'
+
+const convertSegs = segs => segs.map(seg => new Piece(...seg.map(p => new Point(p.x, p.y))))
 
 export const LINEAR = new Symbol('Linear')
 export const QUADRATIC = new Symbol('Quadratic')
@@ -43,25 +45,16 @@ export default class Piece
 
 	length()
 	{
-		// TODO: Calculate the arc length of the curve rather than the linear distance between the start and end
-
-		const start = this.start()
-		const end = this.end()
-
-		const dx = end.x - start.x
-		const dy = end.y - start.y
-
-		return Math.sqrt(dx * dx + dy * dy)
+		return magnitude(this.points)
 	}
 
 	split(t = 0.5)
 	{
-		const convertSeg = seg => seg.map(p => new Point(p.x, p.y))
+		return convertSegs(split(this.points, t))
+	}
 
-		const [segA, segB] = split(this.points.map(p => ({x: p.x, y: p.y})))
-		const pieceA = new Piece(...convertSeg(segA))
-		const pieceB = new Piece(...convertSeg(segB))
-
-		return [pieceA, pieceB]
+	divide(threshold = 10)
+	{
+		return convertSegs(divider(this.points, threshold))
 	}
 }
