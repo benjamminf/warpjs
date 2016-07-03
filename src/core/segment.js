@@ -33,13 +33,16 @@ export default class Segment
 
 	points()
 	{
-		const points = []
+		const points = new Set()
 
 		for(let piece of this.pieces)
 		{
-			points.push(...piece.points)
+			for(let point of piece.points)
+			{
+				points.add(point)
+			}
 		}
 
-		return points
+		return points.values()
 	}
 }

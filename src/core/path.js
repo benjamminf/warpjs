@@ -15,13 +15,16 @@ export default class Path
 
 	points()
 	{
-		const points = []
+		const points = new Set()
 
 		for(let segment of this.segments)
 		{
-			points.push(...segment.points())
+			for(let point of segment.points())
+			{
+				points.add(point)
+			}
 		}
 
-		return points
+		return points.values()
 	}
 }
