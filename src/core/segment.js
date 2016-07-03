@@ -1,6 +1,6 @@
 import Piece from 'piece'
 import Point from 'point'
-import {divider} from 'util/piece'
+import {divider} from '../util/piece'
 
 export default class Segment
 {

@@ -1,4 +1,4 @@
-import {interpolate} from 'util/piece'
+import {interpolate} from '../util/piece'
 
 export default class Point
 {
