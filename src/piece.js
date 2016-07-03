@@ -1,5 +1,5 @@
 import Point from 'point'
-import {magnitude, split, divider} from 'util/math'
+import {magnitude, split, divider} from 'util/piece'
 
 const convertSegs = segs => segs.map(seg => new Piece(...seg.map(p => new Point(p.x, p.y))))
 
