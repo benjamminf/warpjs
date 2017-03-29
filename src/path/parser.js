@@ -23,25 +23,25 @@ export default function parser(pathString)
 	
 	while( (segmentMatch = segmentExpr.exec(pathString)) )
 	{
-		const command = segmentMatch[1].toLowerCase()
+		const type = segmentMatch[1].toLowerCase()
 		const numbers = (segmentMatch[2].match(numberExpr) || []).map(parseFloat)
-		const relative = (command === segmentMatch[1])
+		const relative = (type === segmentMatch[1])
 
-		const schema = segmentSchemas[command]
+		const schema = segmentSchemas[type]
 
 		if(numbers.length < schema.length)
 		{
-			throw new Error(`Malformed path data: command "${command}" has ${numbers.length} arguments, expected ${scheme.length}`)
+			throw new Error(`Malformed path data: type "${type}" has ${numbers.length} arguments, expected ${scheme.length}`)
 		}
 
 		if(numbers.length % schema.length !== 0)
 		{
-			throw new Error(`Malformed path data: command "${command}" has ${numbers.length} arguments, ${numbers.length % schema.length} too many`)
+			throw new Error(`Malformed path data: type "${type}" has ${numbers.length} arguments, ${numbers.length % schema.length} too many`)
 		}
 
 		for(let i = 0; i < numbers.length / schema.length; i++)
 		{
-			const segmentData = { command, relative }
+			const segmentData = { type, relative }
 
 			for(let j = 0; j < schema.length; j++)
 			{

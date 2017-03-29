@@ -11,13 +11,13 @@ export default function absoluteGenerator()
 
 	return function absolute(segment)
 	{
-		if(isNaN(pathStartX) && drawingCmdExpr.test(segment.command))
+		if(isNaN(pathStartX) && drawingCmdExpr.test(segment.type))
 		{
 			pathStartX = prevX
 			pathStartY = prevY
 		}
 
-		if(segment.command === 'z' && !isNaN(pathStartX))
+		if(segment.type === 'z' && !isNaN(pathStartX))
 		{
 			prevX = pathStartX
 			prevY = pathStartY
@@ -49,7 +49,7 @@ export default function absoluteGenerator()
 		prevX = ('x' in segment ? segment.x : prevX)
 		prevY = ('y' in segment ? segment.y : prevY)
 
-		if(segment.command === 'm')
+		if(segment.type === 'm')
 		{
 			pathStartX = prevX
 			pathStartY = prevY

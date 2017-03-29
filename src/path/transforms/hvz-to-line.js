@@ -7,31 +7,28 @@ export default function hvzToLineGenerator()
 
 	return function hvzToLineGenerator(segment)
 	{
-		switch(segment.command)
+		if(isNaN(pathStartX) && segment.type !== 'm')
 		{
-			case 'm':
-			{
-				if(isNaN(pathStartX))
-				{
-					throw new Error(`Transform path error: path must start with "moveto"`)
-				}
-			}
-			break
+			throw new Error(`Transform path error: path must start with "moveto"`)
+		}
+		
+		switch(segment.type)
+		{
 			case 'h':
 			{
-				segment.command = 'l'
+				segment.type = 'l'
 				segment.y = (segment.relative ? 0 : prevY)
 			}
 			break
 			case 'v':
 			{
-				segment.command = 'l'
+				segment.type = 'l'
 				segment.x = (segment.relative ? 0 : prevX)
 			}
 			break
 			case 'z':
 			{
-				segment.command = 'l'
+				segment.type = 'l'
 				segment.x = (segment.relative ? pathStartX - prevX : pathStartX)
 				segment.y = (segment.relative ? pathStartY - prevY : pathStartY)
 			}
@@ -40,7 +37,7 @@ export default function hvzToLineGenerator()
 			{
 				if(segment.rx === 0 || segment.ry === 0)
 				{
-					segment.command = 'l'
+					segment.type = 'l'
 
 					delete segment.rx
 					delete segment.ry
@@ -55,7 +52,7 @@ export default function hvzToLineGenerator()
 		prevX = (segment.relative ? prevX + segment.x : segment.x)
 		prevY = (segment.relative ? prevY + segment.y : segment.y)
 
-		if(segment.command === 'm')
+		if(segment.type === 'm')
 		{
 			pathStartX = prevX
 			pathStartY = prevY
