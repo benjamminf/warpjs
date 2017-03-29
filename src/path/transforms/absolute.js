@@ -9,7 +9,7 @@ export default function absoluteGenerator()
 	let pathStartX = NaN
 	let pathStartY = NaN
 
-	return function absolute(segment, i, path)
+	return function absolute(segment)
 	{
 		if(isNaN(pathStartX) && drawingCmdExpr.test(segment.command))
 		{
