@@ -23,11 +23,11 @@ export default function decoder(pathString)
 	
 	while( (segmentMatch = segmentExpr.exec(pathString)) )
 	{
-		const command = segmentMatch[1]
+		const command = segmentMatch[1].toLowerCase()
 		const numbers = (segmentMatch[2].match(numberExpr) || []).map(parseFloat)
-		const isRelative = (command === command.toLowerCase())
+		const relative = (command === segmentMatch[1])
 
-		const schema = segmentSchemas[ command.toLowerCase() ]
+		const schema = segmentSchemas[command]
 
 		if(numbers.length < schema.length)
 		{
@@ -41,7 +41,7 @@ export default function decoder(pathString)
 
 		for(let i = 0; i < numbers.length / schema.length; i++)
 		{
-			const segmentData = { command, isRelative }
+			const segmentData = { command, relative }
 
 			for(let j = 0; j < schema.length; j++)
 			{
