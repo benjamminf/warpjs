@@ -14,7 +14,7 @@ const segmentSchemas = {
 const segmentExpr = /([mzlhvcsqta])([^mzlhvcsqta]*)/ig
 const numberExpr = /-?[0-9]*\.?[0-9]+(?:e[-+]?\d+)?/ig
 
-export default function decoder(pathString)
+export default function parser(pathString)
 {
 	const pathData = []
 
