@@ -26,10 +26,10 @@ export default function arcToCurveGenerator()
 			const s = segment
 			const curveSegments = converter(prevX, prevY, s.rx, s.ry, s.xRotation, s.largeArc, s.sweep, s.x, s.y)
 
-			curveSegments.forEach(function(curveSegment)
+			for(let curveSegment of curveSegments)
 			{
 				curveSegment.relative = segment.relative
-			})
+			}
 
 			return curveSegments
 		}
