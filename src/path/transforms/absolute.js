@@ -2,9 +2,7 @@ export default function absoluteGenerator()
 {
 	const xProps = ['x', 'x1', 'x2']
 	const yProps = ['y', 'y1', 'y2']
-
 	const drawingCmdExpr = /[lhvcsqta]/
-	const closeCmdExpr = /z/
 
 	let prevX = 0
 	let prevY = 0
