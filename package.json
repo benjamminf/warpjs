@@ -9,7 +9,7 @@
     "src"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./node_modules/webpack/bin/webpack.js --config ./build/webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -29,9 +29,9 @@
   },
   "homepage": "https://github.com/benjamminf/warpjs#readme",
   "devDependencies": {
-    "babel-core": "^6.10.4",
-    "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.9.0",
-    "webpack": "^1.13.1"
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
+    "webpack": "^2.3.2"
   }
 }

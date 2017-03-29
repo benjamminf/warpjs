@@ -3,30 +3,23 @@ const path = require('path')
 
 module.exports = {
 	devtool: 'source-map',
-	entry: '../src/main.js',
+	entry: path.resolve(__dirname, '../src/main.js'),
 	output: {
-		path: '../dist/',
-		filename: 'warp.js'
+		path: path.resolve(__dirname, '../dist/'),
+		filename: 'warp.js',
 	},
-	plugins: [
-		new webpack.optimize.UglifyJsPlugin({
-			compress: {
-				warnings: false
-			}
-		})
-	],
 	module: {
-		loaders: [
+		rules: [
 			{
-				loader: 'babel-loader',
-				test: /\.jsx?$/,
-				include: [
-					path.resolve(__dirname, 'src')
-				],
-				query: {
-					presets: ['es2015']
-				}
-			}
-		]
-	}
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['env'],
+					},
+				},
+			},
+		],
+	},
 }
