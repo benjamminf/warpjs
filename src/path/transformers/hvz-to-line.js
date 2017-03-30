@@ -29,8 +29,8 @@ export default function hvzToLineGenerator()
 			case 'z':
 			{
 				segment.type = 'l'
-				segment.x = (segment.relative ? pathStartX - prevX : pathStartX)
-				segment.y = (segment.relative ? pathStartY - prevY : pathStartY)
+				segment.x = pathStartX - (segment.relative ? prevX : 0)
+				segment.y = pathStartY - (segment.relative ? prevY : 0)
 			}
 			break
 			case 'a':
@@ -49,8 +49,8 @@ export default function hvzToLineGenerator()
 			break
 		}
 
-		prevX = (segment.relative ? prevX + segment.x : segment.x)
-		prevY = (segment.relative ? prevY + segment.y : segment.y)
+		prevX = (segment.relative ? prevX : 0) + segment.x
+		prevY = (segment.relative ? prevY : 0) + segment.y
 
 		if(segment.type === 'm')
 		{
