@@ -1,3 +1,5 @@
+import { isDrawingSegment } from '../utils'
+
 export default function absoluteGenerator()
 {
 	const xProps = ['x', 'x1', 'x2']
@@ -11,7 +13,7 @@ export default function absoluteGenerator()
 
 	return function absolute(segment)
 	{
-		if(isNaN(pathStartX) && drawingCmdExpr.test(segment.type))
+		if(isNaN(pathStartX) && isDrawingSegment(segment))
 		{
 			pathStartX = prevX
 			pathStartY = prevY

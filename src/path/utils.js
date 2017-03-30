@@ -1,4 +1,4 @@
-export const segmentSchemas = {
+const segmentSchemas = {
 	m: ['x', 'y'],
 	z: [],
 	l: ['x', 'y'],
@@ -9,4 +9,16 @@ export const segmentSchemas = {
 	q: ['x1', 'y1', 'x', 'y'],
 	t: ['x', 'y'],
 	a: ['rx', 'ry', 'xRotation', 'largeArc', 'sweep', 'x', 'y'],
+}
+
+const drawingCmdExpr = /[lhvcsqta]/
+
+export function getSegmentSchema(type)
+{
+	return segmentSchemas[ type.toLowerCase() ]
+}
+
+export function isDrawingSegment(segment)
+{
+	return drawingCmdExpr.test(segment.type)
 }

@@ -1,4 +1,4 @@
-import { segmentSchemas } from './utils'
+import { getSegmentSchema } from './utils'
 
 const segmentExpr = /([mzlhvcsqta])([^mzlhvcsqta]*)/ig
 const numberExpr = /-?[0-9]*\.?[0-9]+(?:e[-+]?\d+)?/ig
@@ -16,7 +16,7 @@ export default function parser(pathString)
 		const numbers = (segmentMatch[2].match(numberExpr) || []).map(parseFloat)
 		const relative = (type === segmentMatch[1])
 
-		const schema = segmentSchemas[type]
+		const schema = getSegmentSchema(type)
 
 		if(numbers.length < schema.length)
 		{

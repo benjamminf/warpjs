@@ -1,4 +1,4 @@
-import { segmentSchemas } from './utils'
+import { getSegmentSchema } from './utils'
 
 export default function encoder(pathData, precision=2)
 {
@@ -10,7 +10,7 @@ export default function encoder(pathData, precision=2)
 		const output = []
 		const outputType = (segment.relative ? segment.type : segment.type.toUpperCase())
 
-		const schema = segmentSchemas[segment.type]
+		const schema = getSegmentSchema(segment.type)
 
 		if(prevType !== outputType)
 		{
