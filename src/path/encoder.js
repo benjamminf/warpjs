@@ -18,6 +18,7 @@ export default function encoder(pathData, precision=2)
 			prevType = outputType
 		}
 
+		let first = true
 		for(let property of schema)
 		{
 			const value = segment[property]
@@ -30,7 +31,13 @@ export default function encoder(pathData, precision=2)
 				default: throw new Error('Invalid path data')
 			}
 
-			output.push(' ', outputValue)
+			if(!first)
+			{
+				output.push(' ')
+			}
+
+			output.push(outputValue)
+			first = false
 		}
 
 		return output.join('')
