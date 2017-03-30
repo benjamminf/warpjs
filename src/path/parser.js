@@ -45,7 +45,7 @@ export default function parser(pathString)
 
 			for(let j = 0; j < schema.length; j++)
 			{
-				segmentData[ schema[j] ] = numbers[j]
+				segmentData[ schema[j] ] = numbers[i * schema.length + j]
 			}
 
 			pathData.append(segmentData)
