@@ -37,7 +37,7 @@ export default function parser(pathString)
 				segmentData[ schema[j] ] = numbers[i * schema.length + j]
 			}
 
-			pathData.append(segmentData)
+			pathData.push(segmentData)
 		}
 	}
 
