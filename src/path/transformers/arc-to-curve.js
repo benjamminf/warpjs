@@ -1,3 +1,5 @@
+import { isDrawingSegment } from '../utils'
+
 export default function arcToCurveGenerator()
 {
 	let prevX = 0
@@ -7,7 +9,7 @@ export default function arcToCurveGenerator()
 
 	return function arcToCurve(segment)
 	{
-		if(isNaN(pathStartX) && drawingCmdExpr.test(segment.type))
+		if(isNaN(pathStartX) && isDrawingSegment(segment.type))
 		{
 			pathStartX = prevX
 			pathStartY = prevY
@@ -24,7 +26,9 @@ export default function arcToCurveGenerator()
 		if(segment.type === 'a')
 		{
 			const s = segment
-			const curveSegments = converter(prevX, prevY, s.rx, s.ry, s.xRotation, s.largeArc, s.sweep, s.x, s.y)
+			const startX = (segment.relative ? 0 : prevX)
+			const startY = (segment.relative ? 0 : prevY)
+			const curveSegments = converter(startX, startY, s.rx, s.ry, s.xRotation, s.largeArc, s.sweep, s.x, s.y)
 
 			for(let curveSegment of curveSegments)
 			{
@@ -34,8 +38,8 @@ export default function arcToCurveGenerator()
 			return curveSegments
 		}
 
-		prevX = ('x' in segment ? segment.x : prevX)
-		prevY = ('y' in segment ? segment.y : prevY)
+		prevX = ('x' in segment ? (segment.relative ? prevX : 0) + segment.x : prevX)
+		prevY = ('y' in segment ? (segment.relative ? prevY : 0) + segment.y : prevY)
 
 		if(segment.type === 'm')
 		{
