@@ -9,7 +9,7 @@
     "src"
   ],
   "scripts": {
-    "test": "mocha-webpack --webpack-config ./build/webpack.config-test.js \"test/main.js\"",
+    "test": "NODE_ENV=test nyc mocha-webpack --webpack-config ./build/webpack.config-test.js \"test/main.js\"",
     "build": "./node_modules/webpack/bin/webpack.js --config ./build/webpack.config.js",
     "test:watch": "npm run test -- --watch",
     "build:watch": "npm run build -- --watch"
@@ -34,9 +34,19 @@
   "devDependencies": {
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
+    "babel-plugin-istanbul": "^4.1.1",
     "babel-preset-env": "^1.2.2",
     "mocha": "^3.2.0",
     "mocha-webpack": "^0.7.0",
+    "nyc": "^10.2.0",
     "webpack": "^2.3.2"
+  },
+  "nyc": {
+    "extension": [
+      ".js"
+    ],
+    "include": [
+      "src"
+    ]
   }
 }

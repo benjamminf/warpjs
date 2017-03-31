@@ -1,2 +1,4 @@
-node_modules/
 .tmp/
+.nyc_output/
+node_modules/
+coverage/
