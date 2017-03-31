@@ -3,6 +3,11 @@ import parser from '../../src/path/parser'
 
 describe('parser()', function()
 {
+	it('should parse empty path string', function()
+	{
+		assert.deepEqual([], parser(' '))
+	})
+	
 	it('should parse space separated path string', function()
 	{
 		assert.deepEqual([
