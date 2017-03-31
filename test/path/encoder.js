@@ -10,4 +10,12 @@ describe('encoder()', function()
 			{ type: 'l', relative: false, x: 2, y: 3 },
 		]))
 	})
+
+	it('should encode path string with boolean values', function()
+	{
+		assert.equal('M0 1A2 3 0 0 1 4 5', encoder([
+			{ type: 'm', relative: false, x: 0, y: 1 },
+			{ type: 'a', relative: false, rx: 2, ry: 3, xRotation: 0, largeArc: false, sweep: true, x: 4, y: 5 },
+		]))
+	})
 })
