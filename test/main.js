@@ -7,5 +7,6 @@ describe('Path', function()
 	describe('Transformers', function()
 	{
 		require('./path/transformers/absolute')
+		require('./path/transformers/arc-to-curve')
 	})
 })
