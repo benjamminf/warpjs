@@ -53,7 +53,7 @@ export default function arcToCurveGenerator()
 
 function converter(sx, sy, rx, ry, angle, large, sweep, x, y)
 {
-	if(sx === x && sy === x)
+	if(sx === x && sy === y)
 	{
 		return false
 	}
