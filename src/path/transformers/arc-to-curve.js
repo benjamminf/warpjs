@@ -132,12 +132,12 @@ function converter(sx, sy, rx, ry, angle, large, sweep, x, y)
 
 		segments.push({
 			type: 'c',
-			x1: epx,
-			y1: epy,
-			x2: sx + dx,
-			y2: sy + dy,
-			x: epx + dxe,
-			y: epy + dye,
+			x: epx,
+			y: epy,
+			x1: sx + dx,
+			y1: sy + dy,
+			x2: epx + dxe,
+			y2: epy + dye,
 		})
 
 		theta1 = theta2
