@@ -8,7 +8,7 @@ export function line(x1, y1, x2, y2)
 	]
 }
 
-export function polyline(points...)
+export function polyline(...points)
 {
 	return points.map((p, i) => ({
 		type: i === 0 ? 'm' : 'l',
@@ -18,7 +18,7 @@ export function polyline(points...)
 	}))
 }
 
-export function polygon(points...)
+export function polygon(...points)
 {
 	const path = polyline(...points)
 	path.append({ type: 'z', relative: false })
