@@ -23,21 +23,28 @@ export default function parser(pathString)
 			throw new Error(`Malformed path data: type "${type}" has ${numbers.length} arguments, expected ${scheme.length}`)
 		}
 
-		if(numbers.length % schema.length !== 0)
+		if(schema.length > 0)
 		{
-			throw new Error(`Malformed path data: type "${type}" has ${numbers.length} arguments, ${numbers.length % schema.length} too many`)
-		}
-
-		for(let i = 0; i < numbers.length / schema.length; i++)
-		{
-			const segmentData = { type, relative }
-
-			for(let j = 0; j < schema.length; j++)
+			if(numbers.length % schema.length !== 0)
 			{
-				segmentData[ schema[j] ] = numbers[i * schema.length + j]
+				throw new Error(`Malformed path data: type "${type}" has ${numbers.length} arguments, ${numbers.length % schema.length} too many`)
 			}
 
-			pathData.push(segmentData)
+			for(let i = 0; i < numbers.length / schema.length; i++)
+			{
+				const segmentData = { type, relative }
+
+				for(let j = 0; j < schema.length; j++)
+				{
+					segmentData[ schema[j] ] = numbers[i * schema.length + j]
+				}
+
+				pathData.push(segmentData)
+			}
+		}
+		else
+		{
+			pathData.push({ type, relative })
 		}
 	}
 

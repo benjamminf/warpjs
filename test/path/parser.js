@@ -57,4 +57,13 @@ describe('parser()', function()
 			{ type: 'l', relative: false, x: 6, y: 7 },
 		], parser('M 0,1 L 2,3 4,5 6,7'))
 	})
+
+	it('should parse with closing segment', function()
+	{
+		assert.deepEqual([
+			{ type: 'm', relative: false, x: 0, y: 1 },
+			{ type: 'l', relative: false, x: 2, y: 3 },
+			{ type: 'z', relative: false },
+		], parser('M 0,1 L 2,3 Z'))
+	})
 })
