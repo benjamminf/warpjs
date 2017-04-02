@@ -1,3 +1,5 @@
+import { isDrawingSegment } from '../utils'
+
 export default function lineToCurveGenerator(curveType='q')
 {
 	let prevX = 0
