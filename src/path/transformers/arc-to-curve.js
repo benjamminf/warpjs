@@ -9,6 +9,8 @@ export default function arcToCurveGenerator()
 
 	return function arcToCurve(segment)
 	{
+		let segments = [segment]
+
 		if(isNaN(pathStartX) && isDrawingSegment(segment.type))
 		{
 			pathStartX = prevX
@@ -25,10 +27,10 @@ export default function arcToCurveGenerator()
 
 		if(segment.type === 'a')
 		{
-			const s = segment
 			const startX = (segment.relative ? 0 : prevX)
 			const startY = (segment.relative ? 0 : prevY)
-			const curveSegments = converter(startX, startY, s.rx, s.ry, s.xRotation, s.largeArc, s.sweep, s.x, s.y)
+			const { rx, ry, xRotation, largeArc, sweep, x, y } = segment
+			const curveSegments = converter(startX, startY, rx, ry, xRotation, largeArc, sweep, x, y)
 			
 			let prevCurveX = 0
 			let prevCurveY = 0
@@ -51,7 +53,7 @@ export default function arcToCurveGenerator()
 				prevCurveY = curveSegment.y
 			}
 
-			return curveSegments
+			segments = curveSegments
 		}
 
 		prevX = ('x' in segment ? (segment.relative ? prevX : 0) + segment.x : prevX)
@@ -63,7 +65,7 @@ export default function arcToCurveGenerator()
 			pathStartY = prevY
 		}
 
-		return segment
+		return segments
 	}
 }
 
@@ -71,7 +73,7 @@ function converter(sx, sy, rx, ry, angle, large, sweep, x, y)
 {
 	if(sx === x && sy === y)
 	{
-		return false
+		return []
 	}
 
 	if(!rx && !ry)
