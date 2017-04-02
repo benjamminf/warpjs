@@ -5,61 +5,61 @@ import { createElement, getProperty } from './utils'
 
 export function toPath(element)
 {
-	const shapes = element.querySelectorAll('line, polyline, polygon, rect, ellipse, circle')
+	const shapeElements = element.querySelectorAll('line, polyline, polygon, rect, ellipse, circle')
 
-	for(let shape of shapes)
+	for(let shapeElement of shapeElements)
 	{
 		let path = {}
-		switch(shape.tagName.toLowerCase())
+		switch(shapeElement.tagName.toLowerCase())
 		{
 			case 'line':
 			{
 				path = pathShape.line(
-					getProperty(shape, 'x1'),
-					getProperty(shape, 'y1'),
-					getProperty(shape, 'x2'),
-					getProperty(shape, 'y2')
+					getProperty(shapeElement, 'x1'),
+					getProperty(shapeElement, 'y1'),
+					getProperty(shapeElement, 'x2'),
+					getProperty(shapeElement, 'y2')
 				)
 			}
 			break
 			case 'polyline':
 			{
-				path = pathShape.polyline(...shape.points)
+				path = pathShape.polyline(...shapeElement.points)
 			}
 			break
 			case 'polygon':
 			{
-				path = pathShape.polygon(...shape.points)
+				path = pathShape.polygon(...shapeElement.points)
 			}
 			break
 			case 'rect':
 			{
 				path = pathShape.rectangle(
-					getProperty(shape, 'x'),
-					getProperty(shape, 'y'),
-					getProperty(shape, 'width'),
-					getProperty(shape, 'height'),
-					getProperty(shape, 'rx'),
-					getProperty(shape, 'ry')
+					getProperty(shapeElement, 'x'),
+					getProperty(shapeElement, 'y'),
+					getProperty(shapeElement, 'width'),
+					getProperty(shapeElement, 'height'),
+					getProperty(shapeElement, 'rx'),
+					getProperty(shapeElement, 'ry')
 				)
 			}
 			break
 			case 'ellipse':
 			{
 				path = pathShape.ellipse(
-					getProperty(shape, 'cx'),
-					getProperty(shape, 'cy'),
-					getProperty(shape, 'rx'),
-					getProperty(shape, 'ry')
+					getProperty(shapeElement, 'cx'),
+					getProperty(shapeElement, 'cy'),
+					getProperty(shapeElement, 'rx'),
+					getProperty(shapeElement, 'ry')
 				)
 			}
 			break
 			case 'circle':
 			{
 				path = pathShape.circle(
-					getProperty(shape, 'cx'),
-					getProperty(shape, 'cy'),
-					getProperty(shape, 'r')
+					getProperty(shapeElement, 'cx'),
+					getProperty(shapeElement, 'cy'),
+					getProperty(shapeElement, 'r')
 				)
 			}
 			break
@@ -68,7 +68,7 @@ export function toPath(element)
 		const pathString = pathEncoder(path)
 		const attributes = { d: pathString }
 
-		for(let attribute of shape.attributes)
+		for(let attribute of shapeElement.attributes)
 		{
 			const name = attribute.nodeName
 			const value = attribute.nodeValue
@@ -81,7 +81,7 @@ export function toPath(element)
 		}
 
 		const pathElement = createElement('path', attributes)
-		shape.parentNode.replaceChild(pathElement, shape)
+		shapeElement.parentNode.replaceChild(pathElement, shapeElement)
 	}
 }
 
