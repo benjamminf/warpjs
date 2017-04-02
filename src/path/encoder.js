@@ -9,16 +9,16 @@ export default function encoder(pathData, precision=2)
 	{
 		const output = []
 		const outputType = (segment.relative ? segment.type : segment.type.toUpperCase())
+		let first = (prevType !== outputType)
 
 		const schema = getSegmentSchema(segment.type)
-
-		if(prevType !== outputType)
+		
+		if(first)
 		{
 			output.push(outputType)
 			prevType = outputType
 		}
 
-		let first = true
 		for(let property of schema)
 		{
 			const value = segment[property]
