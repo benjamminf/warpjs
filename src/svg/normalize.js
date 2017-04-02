@@ -1,9 +1,14 @@
 import pathParser from '../path/parser'
 import pathEncoder from '../path/encoder'
+import pathTransformer from '../path/transformer'
+import absoluteTransformer from '../path/transformers/absolute'
+import hvzToLineTransformer from '../path/transformers/hvz-to-line'
+import lineToCurveTransformer from '../path/transformers/line-to-curve'
+import arcToCurveTransformer from '../path/transformers/arc-to-curve'
 import * as pathShape from '../path/shape'
-import { createElement, getProperty } from './utils'
+import { createElement, getProperty, setProperty } from './utils'
 
-export function toPath(element)
+export function shapesToPaths(element)
 {
 	const shapeElements = element.querySelectorAll('line, polyline, polygon, rect, ellipse, circle')
 
@@ -85,17 +90,22 @@ export function toPath(element)
 	}
 }
 
-export function toAbsolute(element)
+export function preparePaths(element, curveType='q')
 {
+	const pathElements = element.querySelectorAll('path')
 
-}
+	for(let pathElement of pathElements)
+	{
+		let pathString = getProperty(pathElement, 'd')
+		let path = pathParser(pathString)
 
-export function toLine(element)
-{
+		path = pathTransformer(path, absoluteTransformer())
+		path = pathTransformer(path, hvzToLineTransformer())
+		path = pathTransformer(path, lineToCurveTransformer(curveType))
+		path = pathTransformer(path, arcToCurveTransformer())
+		
+		pathString = pathEncoder(path)
 
-}
-
-export function toCurve(element, curveType='q')
-{
-
+		setProperty(pathElement, 'd', pathString)
+	}
 }

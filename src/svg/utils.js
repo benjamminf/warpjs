@@ -4,7 +4,7 @@ export function createElement(tag, attributes={})
 
 	for(let name of Object.keys(attributes))
 	{
-		element.setAttribute(name, attributes[name])
+		setProperty(element, name, attributes[name])
 	}
 
 	return element
@@ -18,4 +18,9 @@ export function getProperty(element, property)
 	}
 
 	return element.getAttribute(property)
+}
+
+export function setProperty(element, property, value)
+{
+	element.setAttribute(property, value)
 }
