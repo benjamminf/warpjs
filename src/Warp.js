@@ -1,30 +1,32 @@
+import * as normalize from './svg/normalize'
+
 class Warp
 {
 	constructor(element)
 	{
-
+		this.element = element
 	}
 
-	normalize(steps=-1)
+	normalize(steps=-1, curveType='q')
 	{
 		if(steps & Warp.TO_PATH)
 		{
-			
+			normalize.toPath(this.element)
 		}
 		
 		if(steps & Warp.TO_ABSOLUTE)
 		{
-
+			normalize.toAbsolute(this.element)
 		}
 		
 		if(steps & Warp.TO_LINE)
 		{
-
+			normalize.toLine(this.element)
 		}
 
 		if(steps & Warp.TO_CURVE)
 		{
-
+			normalize.toCurve(this.element, curveType)
 		}
 	}
 
