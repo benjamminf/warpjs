@@ -64,8 +64,6 @@ export function rectangle(x, y, width, height, rx=0, ry=0)
 		]
 	}
 
-	path.append({ type: 'z', relative })
-
 	return path
 }
 
@@ -78,11 +76,8 @@ export function ellipse(cx, cy, rx, ry)
 
 	return [
 		{ type: 'm', relative, x: cx, y: cy - ry },
-		{ type: 'a', relative, rx, ry, xRotation, largeArc, sweep, x: cx + rx, y: cy },
 		{ type: 'a', relative, rx, ry, xRotation, largeArc, sweep, x: cx, y: cy + ry },
-		{ type: 'a', relative, rx, ry, xRotation, largeArc, sweep, x: cx - rx, y: cy },
 		{ type: 'a', relative, rx, ry, xRotation, largeArc, sweep, x: cx, y: cy - ry },
-		{ type: 'z', relative },
 	]
 }
 
