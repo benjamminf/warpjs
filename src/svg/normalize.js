@@ -2,6 +2,7 @@ import pathParser from '../path/parser'
 import pathEncoder from '../path/encoder'
 import pathTransformer from '../path/transformer'
 import absoluteTransformer from '../path/transformers/absolute'
+import shortToLongTransformer from '../path/transformers/short-to-long'
 import hvzToLineTransformer from '../path/transformers/hvz-to-line'
 import lineToCurveTransformer from '../path/transformers/line-to-curve'
 import arcToCurveTransformer from '../path/transformers/arc-to-curve'
@@ -100,6 +101,7 @@ export function preparePaths(element, curveType='q')
 		let path = pathParser(pathString)
 
 		path = pathTransformer(path, absoluteTransformer())
+		path = pathTransformer(path, shortToLongTransformer())
 		path = pathTransformer(path, hvzToLineTransformer())
 		path = pathTransformer(path, lineToCurveTransformer(curveType))
 		path = pathTransformer(path, arcToCurveTransformer())

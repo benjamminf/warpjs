@@ -9,7 +9,7 @@ export default function arcToCurveGenerator()
 
 	return function arcToCurve(segment)
 	{
-		let segments = [segment]
+		let segments = segment
 
 		if(isNaN(pathStartX) && isDrawingSegment(segment.type))
 		{
