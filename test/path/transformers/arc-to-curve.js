@@ -79,4 +79,19 @@ describe('arcToCurve()', function()
 			{ type: 'z', relative: false },
 		], arcToCurve()), 0.01)
 	})
+
+	it('should convert two consecutive arcs to two four cubic bezier curves', function()
+	{
+		approxDeepEqual([
+			{ type: 'm', relative: false, x: 50, y: 40 },
+			{ type: 'c', relative: false, x1: 55.52, y1: 40, x2: 60, y2: 44.48, x: 60, y: 50 },
+			{ type: 'c', relative: false, x1: 60, y1: 55.52, x2: 55.52, y2: 60, x: 50, y: 60 },
+			{ type: 'c', relative: false, x1: 44.48, y1: 60, x2: 40, y2: 55.52, x: 40, y: 50 },
+			{ type: 'c', relative: false, x1: 40, y1: 44.48, x2: 44.48, y2: 40, x: 50, y: 40 },
+		], transformer([
+			{ type: 'm', relative: false, x: 50, y: 40 },
+			{ type: 'a', relative: false, rx: 10, ry: 10, xRotation: 0, largeArc: false, sweep: true, x: 50, y: 60 },
+			{ type: 'a', relative: false, rx: 10, ry: 10, xRotation: 0, largeArc: false, sweep: true, x: 50, y: 40 },
+		], arcToCurve()), 0.01)
+	})
 })
