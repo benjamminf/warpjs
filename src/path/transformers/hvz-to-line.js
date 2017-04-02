@@ -5,7 +5,7 @@ export default function hvzToLineGenerator()
 	let pathStartX = NaN
 	let pathStartY = NaN
 
-	return function hvzToLineGenerator(segment)
+	return function hvzToLine(segment)
 	{
 		if(isNaN(pathStartX) && segment.type !== 'm')
 		{
