@@ -29,10 +29,26 @@ export default function arcToCurveGenerator()
 			const startX = (segment.relative ? 0 : prevX)
 			const startY = (segment.relative ? 0 : prevY)
 			const curveSegments = converter(startX, startY, s.rx, s.ry, s.xRotation, s.largeArc, s.sweep, s.x, s.y)
+			
+			let prevCurveX = 0
+			let prevCurveY = 0
 
 			for(let curveSegment of curveSegments)
 			{
 				curveSegment.relative = segment.relative
+
+				if(segment.relative && curveSegment.type === 'c')
+				{
+					curveSegment.x -= prevCurveX
+					curveSegment.x1 -= prevCurveX
+					curveSegment.x2 -= prevCurveX
+					curveSegment.y -= prevCurveY
+					curveSegment.y1 -= prevCurveY
+					curveSegment.y2 -= prevCurveY
+				}
+
+				prevCurveX = curveSegment.x
+				prevCurveY = curveSegment.y
 			}
 
 			return curveSegments
@@ -60,7 +76,7 @@ function converter(sx, sy, rx, ry, angle, large, sweep, x, y)
 
 	if(!rx && !ry)
 	{
-		return { type: 'l', x, y }
+		return [ { type: 'l', x, y } ]
 	}
 
 	const sinPhi = Math.sin(angle * Math.PI / 180)
