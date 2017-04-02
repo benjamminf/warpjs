@@ -1,4 +1,4 @@
-import { approxDeepEqual } from '../../utils'
+import { approxDeepEqual } from '../../assert'
 import transformer from '../../../src/path/transformer'
 import encoder from '../../../src/path/encoder'
 import arcToCurve from '../../../src/path/transformers/arc-to-curve'
