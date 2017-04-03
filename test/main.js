@@ -9,6 +9,6 @@ describe('Path', function()
 		require('./path/transformers/absolute')
 		require('./path/transformers/arc-to-curve')
 	})
-})
 
-require('./interpolator')
+	require('./path/interpolate')
+})

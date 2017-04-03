@@ -3,82 +3,11 @@ import { getProperty, setProperty } from './svg/utils'
 import pathParser from './path/parser'
 import pathEncoder from './path/encoder'
 import pathTransformer from './path/transformer'
-import interpolator from './interpolator'
+import { createLineSegment, pointGroups } from './path/utils'
+import * as interpolate from './path/interpolate'
 
 const polationTypesExpr = /[lqc]/
-const pointGroups = [
-	['x1', 'y1'],
-	['x2', 'y2'],
-	['x', 'y'],
-]
-
-function createSegment(points)
-{
-	const segment = { relative: false }
-
-	switch(points.length)
-	{
-		case 2: { segment.type = 'l' } break
-		case 3: { segment.type = 'q' } break
-		case 4: { segment.type = 'c' } break
-		default: return false
-	}
-
-	for(let i = 1; i < points.length; i++)
-	{
-		const g = (i < points.length - 1 ? i : pointGroups.length) - 1
-		const [x, y] = pointGroups[g]
-
-		segment[x] = points[i][0]
-		segment[y] = points[i][1]
-
-		if(points[i].length > 2)
-		{
-			segment.extended = segment.extended || {}
-			segment.extended[g] = points[i].slice(2)
-		}
-	}
-
-	return segment
-}
-
-function getPointDelta(points)
-{
-	const startPoint = points[0]
-	const endPoint = points[points.length - 1]
-	const dx = endPoint[0] - startPoint[0]
-	const dy = endPoint[1] - startPoint[1]
-
-	return Math.sqrt(dx**2 + dy**2)
-}
-
-function interpolateUntil(points, threshold)
-{
-	const stack = [points]
-	const segments = []
-
-	while(stack.length > 0)
-	{
-		const currentPoints = stack.pop()
-
-		if(getPointDelta(currentPoints) > threshold)
-		{
-			const newPoints = interpolator(currentPoints)
-
-			// Add new segments backwards so they end up in correct order
-			for(let i = newPoints.length - 1; i >= 0; i--)
-			{
-				stack.push(newPoints[i])
-			}
-		}
-		else
-		{
-			segments.push(currentPoints)
-		}
-	}
-
-	return segments
-}
+const deltaFunction = points => interpolate.euclideanDistance(points.slice(0, 2))
 
 export default class Warp
 {
@@ -170,11 +99,11 @@ export default class Warp
 						}
 					}
 
-					const rawSegments = interpolateUntil(points, threshold)
+					const rawSegments = interpolate.until(points, threshold, deltaFunction)
 
 					if(rawSegments.length > 1)
 					{
-						segments = rawSegments.map(rawSegment => createSegment(rawSegment))
+						segments = rawSegments.map(rawSegment => createLineSegment(rawSegment))
 						didWork = true
 					}
 				}
