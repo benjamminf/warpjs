@@ -41,7 +41,7 @@ export default class Warp
 	{
 		let didWork = false
 
-		const deltaFunction = function(points)
+		function deltaFunction(points)
 		{
 			const delta = interpolate.euclideanDistance(points.slice(0, 2))
 			didWork = didWork || (delta > threshold)
@@ -67,7 +67,35 @@ export default class Warp
 
 	preInterpolate(transformer, threshold)
 	{
-		return false
+		let didWork = false
+
+		function deltaFunction(points)
+		{
+			const delta = interpolate.euclideanDistance(points.slice(0, 2))
+			didWork = didWork || (delta > threshold)
+
+			return delta
+		}
+
+		for(let path of this.paths)
+		{
+			const transformed = warpTransform(path.data, function(points)
+			{
+				const newPoints = transformer(points.slice(0, 2))
+				newPoints.push(...points)
+
+				return newPoints
+			})
+
+			const interpolated = warpInterpolate(transformed, threshold, deltaFunction)
+
+			path.data = warpTransform(interpolated, points => points.slice(2))
+			const pathString = pathEncoder(path.data)
+
+			setProperty(path.element, 'd', pathString)
+		}
+
+		return didWork
 	}
 
 	preExtrapolate(transformer, threshold)
