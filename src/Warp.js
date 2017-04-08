@@ -6,8 +6,6 @@ import warpTransform from './warp/transform'
 import warpInterpolate from './warp/interpolate'
 import * as interpolate from './path/interpolate'
 
-const deltaFunction = points => interpolate.euclideanDistance(points.slice(0, 2))
-
 export default class Warp
 {
 	constructor(element, curveType='q')
@@ -42,6 +40,14 @@ export default class Warp
 	interpolate(threshold)
 	{
 		let didWork = false
+
+		const deltaFunction = function(points)
+		{
+			const delta = interpolate.euclideanDistance(points.slice(0, 2))
+			didWork = didWork || (delta > threshold)
+
+			return delta
+		}
 
 		for(let path of this.paths)
 		{
