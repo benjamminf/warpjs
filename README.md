@@ -7,14 +7,26 @@
 Warp, distort, bend, twist and smudge your scalable vector graphics in real time. `warp.js` allows you to feed in any
 SVG file and apply any kind of complex transformation.
 
+## Installation
+
+Either download `dist/warp.js` from this repository and include it on your page:
+```html
+<script src="warp.js"></script>
+```
+
+Or install through npm:
+```
+npm install warpjs --save-dev
+```
+
 ## Quick example
 
 ```js
 const svg = document.getElementById('svg-element')
 const warp = new Warp(svg)
 
-warp.interpolate(5)
-warp.transform(([x, y]) => [x, y + 10 * Math.sin(x)])
+warp.interpolate(4)
+warp.transform(([x, y]) => [x, y + 4 * Math.sin(x / 16)])
 ```
 [Run on CodePen &rarr;](http://codepen.io/benjamminf/pen/NpZLeb)
 
