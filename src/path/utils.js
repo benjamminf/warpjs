@@ -66,13 +66,7 @@ export function joinSegments(segmentA, segmentB)
 		const { type, relative, x, y } = segmentB
 		const bothExtended = !!segmentA.extended && !!segmentB.extended
 		const extended = {}
-		const segment = {
-			type,
-			relative,
-			x,
-			y,
-			extended,
-		}
+		const segment = { type, relative, x, y, extended }
 
 		function setExtended(pointsA, pointsB, type)
 		{
@@ -95,15 +89,8 @@ export function joinSegments(segmentA, segmentB)
 			case 'l': break
 			case 'q':
 			{
-				segment = {
-					type,
-					relative,
-					x1: (segmentA.x1 + segmentB.x1) / 2,
-					y1: (segmentA.y1 + segmentB.y1) / 2,
-					x,
-					y,
-					extended,
-				}
+				segment.x1 = (segmentA.x1 + segmentB.x1) / 2
+				segment.y1 = (segmentA.y1 + segmentB.y1) / 2
 
 				if(bothExtended)
 				{
@@ -113,17 +100,10 @@ export function joinSegments(segmentA, segmentB)
 			break
 			case 'c':
 			{
-				segment = {
-					type,
-					relative,
-					x1: (segmentA.x1 + segmentA.x2) / 2,
-					y1: (segmentA.y1 + segmentA.y2) / 2,
-					x2: (segmentB.x1 + segmentB.x2) / 2,
-					y2: (segmentB.y1 + segmentB.y2) / 2,
-					x,
-					y,
-					extended,
-				}
+				segment.x1 = (segmentA.x1 + segmentA.x2) / 2
+				segment.y1 = (segmentA.y1 + segmentA.y2) / 2
+				segment.x2 = (segmentB.x1 + segmentB.x2) / 2
+				segment.y2 = (segmentB.y1 + segmentB.y2) / 2
 
 				if(bothExtended)
 				{
