@@ -2,9 +2,10 @@ import { shapesToPaths, preparePaths } from './svg/normalize'
 import { getProperty, setProperty } from './svg/utils'
 import pathParser from './path/parser'
 import pathEncoder from './path/encoder'
+import { euclideanDistance } from './path/interpolate'
 import warpTransform from './warp/transform'
 import warpInterpolate from './warp/interpolate'
-import * as interpolate from './path/interpolate'
+import warpExtrapolate from './warp/extrapolate'
 
 export default class Warp
 {
@@ -26,15 +27,23 @@ export default class Warp
 		})
 	}
 
+	update()
+	{
+		for(let path of this.paths)
+		{
+			const pathString = pathEncoder(path.data)
+			setProperty(path.element, 'd', pathString)
+		}
+	}
+
 	transform(transformer)
 	{
 		for(let path of this.paths)
 		{
 			path.data = warpTransform(path.data, transformer)
-			const pathString = pathEncoder(path.data)
-
-			setProperty(path.element, 'd', pathString)
 		}
+
+		this.update()
 	}
 
 	interpolate(threshold)
@@ -43,7 +52,7 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = interpolate.euclideanDistance(points.slice(0, 2))
+			const delta = euclideanDistance(points.slice(0, 2))
 			didWork = didWork || (delta > threshold)
 
 			return delta
@@ -52,17 +61,33 @@ export default class Warp
 		for(let path of this.paths)
 		{
 			path.data = warpInterpolate(path.data, threshold, deltaFunction)
-			const pathString = pathEncoder(path.data)
-
-			setProperty(path.element, 'd', pathString)
 		}
+
+		this.update()
 
 		return didWork
 	}
 
 	extrapolate(threshold)
 	{
-		return false
+		let didWork = false
+
+		function deltaFunction(points)
+		{
+			const delta = euclideanDistance(points.slice(0, 2))
+			didWork = didWork || (delta <= threshold)
+
+			return delta
+		}
+
+		for(let path of this.paths)
+		{
+			path.data = warpExtrapolate(path.data, threshold, deltaFunction)
+		}
+
+		this.update()
+
+		return didWork
 	}
 
 	preInterpolate(transformer, threshold)
@@ -71,7 +96,7 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = interpolate.euclideanDistance(points.slice(0, 2))
+			const delta = euclideanDistance(points.slice(0, 2))
 			didWork = didWork || (delta > threshold)
 
 			return delta
@@ -90,10 +115,9 @@ export default class Warp
 			const interpolated = warpInterpolate(transformed, threshold, deltaFunction)
 
 			path.data = warpTransform(interpolated, points => points.slice(2))
-			const pathString = pathEncoder(path.data)
-
-			setProperty(path.element, 'd', pathString)
 		}
+
+		this.update()
 
 		return didWork
 	}

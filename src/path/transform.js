@@ -5,7 +5,7 @@ export default function transform(path, transformer)
 	for(let i = 0; i < path.length; i++)
 	{
 		const segment = JSON.parse(JSON.stringify(path[i]))
-		const result = transformer(segment, i, path)
+		const result = transformer(segment, i, path, newPath)
 
 		if(Array.isArray(result))
 		{

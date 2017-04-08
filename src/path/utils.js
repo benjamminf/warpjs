@@ -58,3 +58,93 @@ export function createLineSegment(points)
 
 	return segment
 }
+
+export function joinSegments(segmentA, segmentB)
+{
+	if(segmentA.type === segmentB.type && segmentA.relative === segmentB.relative)
+	{
+		const { type, relative, x, y } = segmentB
+		const bothExtended = !!segmentA.extended && !!segmentB.extended
+		const extended = {}
+		const segment = {
+			type,
+			relative,
+			x,
+			y,
+			extended,
+		}
+
+		function setExtended(pointsA, pointsB, type)
+		{
+			if(pointsA && pointsB)
+			{
+				const points = []
+				const pointCount = Math.min(pointsA.length, pointsB.length)
+
+				for(let i = 0; i < pointCount; i++)
+				{
+					points.push((pointsA[i] + pointsB[i]) / 2)
+				}
+
+				segment.extended[type] = points
+			}
+		}
+
+		switch(type)
+		{
+			case 'l': break
+			case 'q':
+			{
+				segment = {
+					type,
+					relative,
+					x1: (segmentA.x1 + segmentB.x1) / 2,
+					y1: (segmentA.y1 + segmentB.y1) / 2,
+					x,
+					y,
+					extended,
+				}
+
+				if(bothExtended)
+				{
+					setExtended(segmentA.extended[0], segmentB.extended[0], 0)
+				}
+			}
+			break
+			case 'c':
+			{
+				segment = {
+					type,
+					relative,
+					x1: (segmentA.x1 + segmentA.x2) / 2,
+					y1: (segmentA.y1 + segmentA.y2) / 2,
+					x2: (segmentB.x1 + segmentB.x2) / 2,
+					y2: (segmentB.y1 + segmentB.y2) / 2,
+					x,
+					y,
+					extended,
+				}
+
+				if(bothExtended)
+				{
+					setExtended(segmentA.extended[0], segmentA.extended[1], 0)
+					setExtended(segmentB.extended[0], segmentB.extended[1], 1)
+				}
+			}
+			break
+			default:
+			{
+				return false
+			}
+		}
+
+		if(segmentB.extended && segmentB.extended[2])
+		{
+			extended[2] = segmentB.extended[2]
+		}
+
+		return segment
+	}
+
+	return false
+}
