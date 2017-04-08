@@ -1,5 +1,5 @@
 import assert from 'assert'
-import transformer from '../../src/path/transformer'
+import transform from '../../src/path/transform'
 
 describe('transform()', function()
 {
@@ -8,7 +8,7 @@ describe('transform()', function()
 		assert.deepEqual([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 3 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 3 },
 		], segment => segment))
@@ -20,7 +20,7 @@ describe('transform()', function()
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 3 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 3 },
 		], segment => segment.type === 'm' ? [segment, segment] : segment))
@@ -30,7 +30,7 @@ describe('transform()', function()
 	{
 		assert.deepEqual([
 			{ type: 'l', relative: false, x: 2, y: 3 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 3 },
 		], segment => segment.type === 'm' ? false : segment))

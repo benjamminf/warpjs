@@ -1,6 +1,6 @@
 import pathParser from '../path/parser'
 import pathEncoder from '../path/encoder'
-import pathTransformer from '../path/transformer'
+import pathTransform from '../path/transform'
 import absoluteTransformer from '../path/transformers/absolute'
 import shortToLongTransformer from '../path/transformers/short-to-long'
 import hvzToLineTransformer from '../path/transformers/hvz-to-line'
@@ -100,11 +100,11 @@ export function preparePaths(element, curveType='q')
 		let pathString = getProperty(pathElement, 'd')
 		let path = pathParser(pathString)
 
-		path = pathTransformer(path, absoluteTransformer())
-		path = pathTransformer(path, shortToLongTransformer())
-		path = pathTransformer(path, hvzToLineTransformer())
-		path = pathTransformer(path, lineToCurveTransformer(curveType))
-		path = pathTransformer(path, arcToCurveTransformer())
+		path = pathTransform(path, absoluteTransformer())
+		path = pathTransform(path, shortToLongTransformer())
+		path = pathTransform(path, hvzToLineTransformer())
+		path = pathTransform(path, lineToCurveTransformer(curveType))
+		path = pathTransform(path, arcToCurveTransformer())
 		
 		pathString = pathEncoder(path)
 

@@ -2,7 +2,7 @@ describe('Path', function()
 {
 	require('./path/parser')
 	require('./path/encoder')
-	require('./path/transformer')
+	require('./path/transform')
 
 	describe('Transformers', function()
 	{

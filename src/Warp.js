@@ -2,11 +2,10 @@ import { shapesToPaths, preparePaths } from './svg/normalize'
 import { getProperty, setProperty } from './svg/utils'
 import pathParser from './path/parser'
 import pathEncoder from './path/encoder'
-import pathTransformer from './path/transformer'
-import { createLineSegment, pointGroups } from './path/utils'
+import warpTransform from './warp/transform'
+import warpInterpolate from './warp/interpolate'
 import * as interpolate from './path/interpolate'
 
-const polationTypesExpr = /[lqc]/
 const deltaFunction = points => interpolate.euclideanDistance(points.slice(0, 2))
 
 export default class Warp
@@ -33,36 +32,7 @@ export default class Warp
 	{
 		for(let path of this.paths)
 		{
-			path.data = pathTransformer(path.data, segment =>
-			{
-				for(let i = 0; i < pointGroups.length; i++)
-				{
-					const [x, y] = pointGroups[i]
-
-					if(x in segment && y in segment)
-					{
-						const extendedPoints = (segment.extended ? segment.extended[i] : null) || {}
-						const newPoints = transformer([segment[x], segment[y], ...extendedPoints])
-
-						if(newPoints.length < 2)
-						{
-							throw new Error(`Transformer must return at least 2 points`)
-						}
-
-						segment[x] = newPoints[0]
-						segment[y] = newPoints[1]
-
-						if(newPoints.length > 2)
-						{
-							segment.extended = segment.extended || {}
-							segment.extended[i] = newPoints.slice(2)
-						}
-					}
-				}
-
-				return segment
-			})
-
+			path.data = warpTransform(path.data, transformer)
 			const pathString = pathEncoder(path.data)
 
 			setProperty(path.element, 'd', pathString)
@@ -73,52 +43,9 @@ export default class Warp
 	{
 		let didWork = false
 
-		for(let i = 0; i < this.paths.length; i++)
+		for(let path of this.paths)
 		{
-			let path = this.paths[i]
-			let prevPoints = []
-
-			path.data = pathTransformer(path.data, function(segment)
-			{
-				let segments = segment
-
-				if(polationTypesExpr.test(segment.type))
-				{
-					const points = [prevPoints]
-
-					for(let j = 0; j < pointGroups.length; j++)
-					{
-						const [x, y] = pointGroups[j]
-
-						if(x in segment && y in segment)
-						{
-							const extendedPoints = (segment.extended ? segment.extended[j] : null) || []
-							const pointList = [segment[x], segment[y], ...extendedPoints]
-
-							points.push(pointList)
-						}
-					}
-
-					const rawSegments = interpolate.until(points, threshold, deltaFunction)
-
-					if(rawSegments.length > 1)
-					{
-						segments = rawSegments.map(rawSegment => createLineSegment(rawSegment))
-						didWork = true
-					}
-				}
-
-				if('x' in segment && 'y' in segment)
-				{
-					const extendedPoints = (segment.extended ? segment.extended[2] : null) || {}
-					const pointList = [segment.x, segment.y, ...extendedPoints]
-
-					prevPoints = pointList
-				}
-
-				return segments
-			})
-
+			path.data = warpInterpolate(path.data, threshold, deltaFunction)
 			const pathString = pathEncoder(path.data)
 
 			setProperty(path.element, 'd', pathString)
