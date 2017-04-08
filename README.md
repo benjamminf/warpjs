@@ -1,4 +1,5 @@
 [![Build Status][travis-img]][travis-url]
+![Dev Dependencies][david-img]
 
 # warp.js
 
@@ -7,3 +8,4 @@ SVG file and apply any kind of complex transformation.
 
 [travis-url]: https://travis-ci.org/benjamminf/warpjs
 [travis-img]: https://img.shields.io/travis/benjamminf/warpjs.svg?style=flat-square
+[david-img]: https://img.shields.io/david/dev/benjamminf/warpjs.svg?style=flat-square
