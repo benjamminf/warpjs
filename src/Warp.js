@@ -124,6 +124,33 @@ export default class Warp
 
 	preExtrapolate(transformer, threshold)
 	{
-		return false
+		let didWork = false
+
+		function deltaFunction(points)
+		{
+			const delta = euclideanDistance(points.slice(0, 2))
+			didWork = didWork || (delta <= threshold)
+
+			return delta
+		}
+
+		for(let path of this.paths)
+		{
+			const transformed = warpTransform(path.data, function(points)
+			{
+				const newPoints = transformer(points.slice(0, 2))
+				newPoints.push(...points)
+
+				return newPoints
+			})
+
+			const extrapolated = warpExtrapolate(transformed, threshold, deltaFunction)
+
+			path.data = warpTransform(extrapolated, points => points.slice(2))
+		}
+
+		this.update()
+
+		return didWork
 	}
 }
