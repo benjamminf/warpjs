@@ -23,17 +23,17 @@ export default class Warp
 		this.paths = [].map.call(pathElements, function(element)
 		{
 			const pathString = getProperty(element, 'd')
-			const path = pathParser(pathString)
+			const data = pathParser(pathString)
 
-			return { element, path }
+			return { element, data }
 		})
 	}
 
 	transform(transformer)
 	{
-		for(let { element, path } of this.paths)
+		for(let path of this.paths)
 		{
-			pathTransformer(path, segment =>
+			path.data = pathTransformer(path.data, segment =>
 			{
 				for(let i = 0; i < pointGroups.length; i++)
 				{
@@ -63,9 +63,9 @@ export default class Warp
 				return segment
 			})
 
-			const pathString = pathEncoder(path)
+			const pathString = pathEncoder(path.data)
 
-			setProperty(element, 'd', pathString)
+			setProperty(path.element, 'd', pathString)
 		}
 	}
 
@@ -75,10 +75,10 @@ export default class Warp
 
 		for(let i = 0; i < this.paths.length; i++)
 		{
-			let { element, path } = this.paths[i]
+			let path = this.paths[i]
 			let prevPoints = []
 
-			path = pathTransformer(path, function(segment)
+			path.data = pathTransformer(path.data, function(segment)
 			{
 				let segments = segment
 
@@ -119,11 +119,9 @@ export default class Warp
 				return segments
 			})
 
-			const pathString = pathEncoder(path)
+			const pathString = pathEncoder(path.data)
 
-			setProperty(element, 'd', pathString)
-
-			this.paths[i].path = path
+			setProperty(path.element, 'd', pathString)
 		}
 
 		return didWork
