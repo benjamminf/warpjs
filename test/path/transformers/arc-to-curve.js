@@ -1,5 +1,5 @@
 import { approxDeepEqual } from '../../assert'
-import transformer from '../../../src/path/transformer'
+import transform from '../../../src/path/transform'
 import encoder from '../../../src/path/encoder'
 import arcToCurve from '../../../src/path/transformers/arc-to-curve'
 
@@ -10,7 +10,7 @@ describe('arcToCurve()', function()
 		approxDeepEqual([
 			{ type: 'm', relative: false, x: 100, y: 100 },
 			{ type: 'c', relative: false, x1: 155.23, y1: 100, x2: 200, y2: 144.77, x: 200, y: 200 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 100, y: 100 },
 			{ type: 'a', relative: false, rx: 100, ry: 100, xRotation: 0, largeArc: false, sweep: true, x: 200, y: 200 },
 		], arcToCurve()), 0.01)
@@ -21,7 +21,7 @@ describe('arcToCurve()', function()
 		approxDeepEqual([
 			{ type: 'm', relative: false, x: 100, y: 100 },
 			{ type: 'c', relative: true, x1: 55.23, y1: 0, x2: 100, y2: 44.77, x: 100, y: 100 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 100, y: 100 },
 			{ type: 'a', relative: true, rx: 100, ry: 100, xRotation: 0, largeArc: false, sweep: true, x: 100, y: 100 },
 		], arcToCurve()), 0.01)
@@ -34,7 +34,7 @@ describe('arcToCurve()', function()
 			{ type: 'l', relative: false, x: 100, y: 200 },
 			{ type: 'c', relative: false, x1: 72.39, y1: 200, x2: 50, y2: 177.61, x: 50, y: 150 },
 			{ type: 'c', relative: false, x1: 50, y1: 122.39, x2: 72.39, y2: 100, x: 100, y: 100 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 100, y: 100 },
 			{ type: 'l', relative: false, x: 100, y: 200 },
 			{ type: 'a', relative: false, rx: 50, ry: 50, xRotation: 0, largeArc: false, sweep: true, x: 100, y: 100 },
@@ -48,7 +48,7 @@ describe('arcToCurve()', function()
 			{ type: 'l', relative: true, x: 0, y: 100 },
 			{ type: 'c', relative: true, x1: -27.61, y1: 0, x2: -50, y2: -22.39, x: -50, y: -50 },
 			{ type: 'c', relative: true, x1: 0, y1: -27.61, x2: 22.39, y2: -50, x: 50, y: -50 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 100, y: 100 },
 			{ type: 'l', relative: true, x: 0, y: 100 },
 			{ type: 'a', relative: true, rx: 50, ry: 50, xRotation: 0, largeArc: false, sweep: true, x: 0, y: -100 },
@@ -68,7 +68,7 @@ describe('arcToCurve()', function()
 			{ type: 'c', relative: true, x1: -27.61, y1: 0, x2: -50, y2: -22.39, x: -50, y: -50 },
 			{ type: 'c', relative: true, x1: 0, y1: -27.61, x2: 22.39, y2: -50, x: 50, y: -50 },
 			{ type: 'z', relative: false },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 100, y: 0 },
 			{ type: 'l', relative: true, x: 0, y: 100 },
 			{ type: 'a', relative: true, rx: 50, ry: 50, xRotation: 0, largeArc: false, sweep: true, x: 0, y: -100 },
@@ -88,7 +88,7 @@ describe('arcToCurve()', function()
 			{ type: 'c', relative: false, x1: 60, y1: 55.52, x2: 55.52, y2: 60, x: 50, y: 60 },
 			{ type: 'c', relative: false, x1: 44.48, y1: 60, x2: 40, y2: 55.52, x: 40, y: 50 },
 			{ type: 'c', relative: false, x1: 40, y1: 44.48, x2: 44.48, y2: 40, x: 50, y: 40 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 50, y: 40 },
 			{ type: 'a', relative: false, rx: 10, ry: 10, xRotation: 0, largeArc: false, sweep: true, x: 50, y: 60 },
 			{ type: 'a', relative: false, rx: 10, ry: 10, xRotation: 0, largeArc: false, sweep: true, x: 50, y: 40 },

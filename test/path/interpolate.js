@@ -1,4 +1,4 @@
-import { approxDeepEqual } from './assert'
+import { approxDeepEqual } from '../assert'
 import { split, until, euclideanDistance } from '../../src/path/interpolate'
 
 describe('split()', function()

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import transformer from '../../../src/path/transformer'
+import transform from '../../../src/path/transform'
 import absolute from '../../../src/path/transformers/absolute'
 
 describe('absolute()', function()
@@ -9,7 +9,7 @@ describe('absolute()', function()
 		assert.deepEqual([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 3 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 3 },
 		], absolute()))
@@ -21,7 +21,7 @@ describe('absolute()', function()
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: false, x: 2, y: 4 },
 			{ type: 'l', relative: false, x: 6, y: 9 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: true, x: 2, y: 3 },
 			{ type: 'l', relative: true, x: 4, y: 5 },
@@ -35,7 +35,7 @@ describe('absolute()', function()
 			{ type: 'l', relative: false, x: 2, y: 4 },
 			{ type: 'z', relative: false },
 			{ type: 'm', relative: false, x: 4, y: 6 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: true, x: 2, y: 3 },
 			{ type: 'z', relative: true },
@@ -50,7 +50,7 @@ describe('absolute()', function()
 			{ type: 'l', relative: false, x: 2, y: 4 },
 			{ type: 'z', relative: false },
 			{ type: 'l', relative: false, x: 4, y: 6 },
-		], transformer([
+		], transform([
 			{ type: 'm', relative: false, x: 0, y: 1 },
 			{ type: 'l', relative: true, x: 2, y: 3 },
 			{ type: 'z', relative: true },
@@ -62,7 +62,7 @@ describe('absolute()', function()
 	{
 		assert.deepEqual([
 			{ type: 'l', relative: false, x: 0, y: 1 },
-		], transformer([
+		], transform([
 			{ type: 'l', relative: true, x: 0, y: 1 },
 		], absolute()))
 	})
