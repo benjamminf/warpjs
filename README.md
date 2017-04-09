@@ -2,7 +2,7 @@
 [![Coverage Status][coveralls-img]][coveralls-url]
 ![Dev Dependencies][david-img]
 
-<img alt="warp.js" src="warp.png" width="217" height="67">
+<img alt="warp.js" src="warp.png" width="246" height="75">
 
 Warp, distort, bend, twist and smudge your scalable vector graphics in real time. `warp.js` allows you to feed in any
 SVG file and apply any kind of complex transformation.
