@@ -4,7 +4,7 @@
 
 <img alt="warp.js" src="warp.png" width="246" height="75">
 
-Warp, distort, bend, twist and smudge your scalable vector graphics in real time. `warp.js` allows you to feed in any
+Warp, distort, bend, twist and smudge your scalable vector graphics in the browser. `warp.js` allows you to feed in any
 SVG file and apply any kind of complex transformation.
 
 ## Installation
@@ -19,7 +19,7 @@ Or install through npm:
 npm install warpjs --save-dev
 ```
 
-## Quick example
+## Basic example
 
 ```js
 const svg = document.getElementById('svg-element')
@@ -31,6 +31,28 @@ warp.transform(([x, y]) => [x, y + 4 * Math.sin(x / 16)])
 [Run on CodePen &rarr;](http://codepen.io/benjamminf/pen/NpZLeb)
 
 This example creates a wave effect. Try playing with the values to see how it works.
+
+## Animation example
+
+```js
+warp.interpolate(4)
+warp.transform(([x, y]) => [x, y, y])
+
+let offset = 0
+function animate()
+{
+    warp.transform(([x, y, oy]) => [x, oy + 4 * Math.sin(x / 16 + offset), oy])
+    offset += 0.1
+    requestAnimationFrame(animate)
+}
+
+animate()
+```
+[Run on CodePen &rarr;](http://codepen.io/benjamminf/pen/oZKBEw)
+
+This example extends the previous by animating the wave. It takes advantage of the fact that points can be extended with additional values/dimensions. The first call to `transform()` doesn't actually perform any transformation – instead it extends the coordinate with a second `y` value. This second value won't actually affect how the SVG's path is rendered, but it can be used in subsequent transformations. When it comes to transforming the path to make the wave effect, the second `y` value is used as an "original position" value when calculating the new `y` position.
+
+Using this concept of extending coordinates, you could use it to store velocity, accelerating, or just about anything.
 
 ## API
 
