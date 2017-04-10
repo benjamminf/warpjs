@@ -63,8 +63,6 @@ export default class Warp
 			path.data = warpInterpolate(path.data, threshold, deltaFunction)
 		}
 
-		this.update()
-
 		return didWork
 	}
 
@@ -84,8 +82,6 @@ export default class Warp
 		{
 			path.data = warpExtrapolate(path.data, threshold, deltaFunction)
 		}
-
-		this.update()
 
 		return didWork
 	}
@@ -117,8 +113,6 @@ export default class Warp
 			path.data = warpTransform(interpolated, points => points.slice(2))
 		}
 
-		this.update()
-
 		return didWork
 	}
 
@@ -148,8 +142,6 @@ export default class Warp
 
 			path.data = warpTransform(extrapolated, points => points.slice(2))
 		}
-
-		this.update()
 
 		return didWork
 	}
