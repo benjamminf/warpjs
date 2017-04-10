@@ -84,6 +84,7 @@ Joins path segments together if combining them results in their size being less 
 Performs interpolation on the current SVG, but uses a transformed version of that SVG to determine how the paths are interpolated. This method is used to ensure that before transformation there will be enough points to work with. It helps prevent cases where quality is lost by the transformer dramatically altering the coordinates.
 
 #### Parameters
+- `transformer` The transformation function to be used as a reference for interpolation
 - `threshold` The length in which segments will stop interpolation
 
 #### Returns
@@ -93,6 +94,7 @@ Performs interpolation on the current SVG, but uses a transformed version of tha
 Performs extrapolation on the current SVG, but uses a transformed version of that SVG to determine how the paths are extrapolated. This method is used to ensure that before transformation the right segments are joined to minimize quality loss after transformation. 
 
 #### Parameters
+- `transformer` The transformation function to be used as a reference for extrapolation
 - `threshold` The length in which segments will stop extrapolation
 
 #### Returns
