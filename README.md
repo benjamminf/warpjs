@@ -52,7 +52,7 @@ animate()
 
 This example extends the previous by animating the wave. It takes advantage of the fact that points can be extended with additional values/dimensions. The first call to `transform()` doesn't actually perform any transformation – instead it extends the coordinate with a second `y` value. This second value won't actually affect how the SVG's path is rendered, but it can be used in subsequent transformations. When it comes to transforming the path to make the wave effect, the second `y` value is used as an "original position" value when calculating the new `y` position.
 
-Using this concept of extending coordinates, you could use it to store velocity, accelerating, or just about anything.
+Using this concept of extending coordinates, you could use it to store velocity, acceleration, or just about anything.
 
 ## API
 
