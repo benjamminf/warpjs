@@ -52,7 +52,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta > threshold)
 
 			return delta
@@ -72,7 +77,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta <= threshold)
 
 			return delta
@@ -92,7 +102,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta > threshold)
 
 			return delta
@@ -122,7 +137,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+			
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta <= threshold)
 
 			return delta
