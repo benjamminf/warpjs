@@ -52,7 +52,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta > threshold)
 
 			return delta
@@ -63,8 +68,6 @@ export default class Warp
 			path.data = warpInterpolate(path.data, threshold, deltaFunction)
 		}
 
-		this.update()
-
 		return didWork
 	}
 
@@ -74,7 +77,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta <= threshold)
 
 			return delta
@@ -85,8 +93,6 @@ export default class Warp
 			path.data = warpExtrapolate(path.data, threshold, deltaFunction)
 		}
 
-		this.update()
-
 		return didWork
 	}
 
@@ -96,7 +102,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta > threshold)
 
 			return delta
@@ -117,8 +128,6 @@ export default class Warp
 			path.data = warpTransform(interpolated, points => points.slice(2))
 		}
 
-		this.update()
-
 		return didWork
 	}
 
@@ -128,7 +137,12 @@ export default class Warp
 
 		function deltaFunction(points)
 		{
-			const delta = euclideanDistance(points.slice(0, 2))
+			const linearPoints = [
+				points[0].slice(0, 2),
+				points[points.length - 1].slice(0, 2),
+			]
+			
+			const delta = euclideanDistance(linearPoints)
 			didWork = didWork || (delta <= threshold)
 
 			return delta
@@ -148,8 +162,6 @@ export default class Warp
 
 			path.data = warpTransform(extrapolated, points => points.slice(2))
 		}
-
-		this.update()
 
 		return didWork
 	}
