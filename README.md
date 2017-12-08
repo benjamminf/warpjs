@@ -1,6 +1,5 @@
 [![Build Status][travis-img]][travis-url]
 [![Coverage Status][coveralls-img]][coveralls-url]
-![Dev Dependencies][david-img]
 
 <img alt="warp.js" src="https://raw.githubusercontent.com/benjamminf/warpjs/master/warp.png" width="246" height="75">
 
