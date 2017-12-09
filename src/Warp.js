@@ -13,26 +13,27 @@ export default class Warp
 	{
 		this.element = element
 
-		shapesToPaths(this.element)
-		preparePaths(this.element, curveType)
+		shapesToPaths(element)
+		preparePaths(element, curveType)
 
-		const pathElements = element.querySelectorAll('path')
+		const pathElements = element.tagName.toLowerCase() === 'path' ? [ element ] :
+			Array.from(element.querySelectorAll('path'))
 
-		this.paths = [].map.call(pathElements, function(element)
+		this.paths = pathElements.map(pathElement =>
 		{
-			const pathString = getProperty(element, 'd')
-			const data = pathParser(pathString)
+			const pathString = getProperty(pathElement, 'd')
+			const pathData = pathParser(pathString)
 
-			return { element, data }
+			return { pathElement, pathData }
 		})
 	}
 
 	update()
 	{
-		for(let path of this.paths)
+		for (let { pathElement, pathData } of this.paths)
 		{
-			const pathString = pathEncoder(path.data)
-			setProperty(path.element, 'd', pathString)
+			const pathString = pathEncoder(pathData)
+			setProperty(pathElement, 'd', pathString)
 		}
 	}
 
@@ -40,9 +41,9 @@ export default class Warp
 	{
 		transformers = Array.isArray(transformers) ? transformers : [ transformers ]
 
-		for(let path of this.paths)
+		for (let path of this.paths)
 		{
-			path.data = warpTransform(path.data, transformers)
+			path.pathData = warpTransform(path.pathData, transformers)
 		}
 
 		this.update()
@@ -65,9 +66,9 @@ export default class Warp
 			return delta
 		}
 
-		for(let path of this.paths)
+		for (let path of this.paths)
 		{
-			path.data = warpInterpolate(path.data, threshold, deltaFunction)
+			path.pathData = warpInterpolate(path.pathData, threshold, deltaFunction)
 		}
 
 		return didWork
@@ -90,9 +91,9 @@ export default class Warp
 			return delta
 		}
 
-		for(let path of this.paths)
+		for (let path of this.paths)
 		{
-			path.data = warpExtrapolate(path.data, threshold, deltaFunction)
+			path.pathData = warpExtrapolate(path.pathData, threshold, deltaFunction)
 		}
 
 		return didWork
@@ -115,9 +116,9 @@ export default class Warp
 			return delta
 		}
 
-		for(let path of this.paths)
+		for (let path of this.paths)
 		{
-			const transformed = warpTransform(path.data, function(points)
+			const transformed = warpTransform(path.pathData, function(points)
 			{
 				const newPoints = transformer(points.slice(0, 2))
 				newPoints.push(...points)
@@ -127,7 +128,7 @@ export default class Warp
 
 			const interpolated = warpInterpolate(transformed, threshold, deltaFunction)
 
-			path.data = warpTransform(interpolated, points => points.slice(2))
+			path.pathData = warpTransform(interpolated, points => points.slice(2))
 		}
 
 		return didWork
@@ -150,9 +151,9 @@ export default class Warp
 			return delta
 		}
 
-		for(let path of this.paths)
+		for (let path of this.paths)
 		{
-			const transformed = warpTransform(path.data, function(points)
+			const transformed = warpTransform(path.pathData, function(points)
 			{
 				const newPoints = transformer(points.slice(0, 2))
 				newPoints.push(...points)
@@ -162,7 +163,7 @@ export default class Warp
 
 			const extrapolated = warpExtrapolate(transformed, threshold, deltaFunction)
 
-			path.data = warpTransform(extrapolated, points => points.slice(2))
+			path.pathData = warpTransform(extrapolated, points => points.slice(2))
 		}
 
 		return didWork
