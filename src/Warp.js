@@ -36,11 +36,13 @@ export default class Warp
 		}
 	}
 
-	transform(transformer)
+	transform(transformers)
 	{
+		transformers = Array.isArray(transformers) ? transformers : [ transformers ]
+
 		for(let path of this.paths)
 		{
-			path.data = warpTransform(path.data, transformer)
+			path.data = warpTransform(path.data, transformers)
 		}
 
 		this.update()
