@@ -1,6 +1,9 @@
 ## Changelog
 
-### v1.0.3
+### v1.0.4
+- `Fixed` Disabled ability to initialise Warp objects on single SVG shapes as it prevented retaining a reference to the root element
+
+#### v1.0.3
 - `Fixed` Fixed bug with circle shapes causing errors when initialising a Warp instance
 
 #### v1.0.2
