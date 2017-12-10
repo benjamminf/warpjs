@@ -39,7 +39,7 @@ export default function interpolate(path, threshold, deltaFunction)
 
 		if('x' in segment && 'y' in segment)
 		{
-			const extendedPoints = (segment.extended ? segment.extended[2] : null) || {}
+			const extendedPoints = (segment.extended ? segment.extended[2] : null) || []
 			const pointList = [segment.x, segment.y, ...extendedPoints]
 
 			prevPoints = pointList

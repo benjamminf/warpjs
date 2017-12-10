@@ -11,7 +11,7 @@ export default function transform(path, transformers)
 
 			if (x in segment && y in segment)
 			{
-				const extendedPoints = (segment.extended ? segment.extended[i] : null) || {}
+				const extendedPoints = (segment.extended ? segment.extended[i] : null) || []
 				const oldPoints = [ segment[x], segment[y], ...extendedPoints ]
 				const newPoints = transformers.reduce((points, transformer) => transformer(points), oldPoints)
 
