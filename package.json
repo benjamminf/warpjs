@@ -1,6 +1,6 @@
 {
   "name": "warpjs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Warp, distort, bend, twist and smudge your SVG's directly in the browser",
   "main": "dist/warp.js",
   "files": [
