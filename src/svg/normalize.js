@@ -11,91 +11,97 @@ import { createElement, getProperty, setProperty } from './utils'
 
 export function shapesToPaths(element)
 {
-	const shapeElements = element.querySelectorAll('line, polyline, polygon, rect, ellipse, circle')
+	const shapeMap = {
 
-	for(let shapeElement of shapeElements)
+		line(shapeElement)
+		{
+			return pathShape.line(
+				getProperty(shapeElement, 'x1'),
+				getProperty(shapeElement, 'y1'),
+				getProperty(shapeElement, 'x2'),
+				getProperty(shapeElement, 'y2')
+			)
+		},
+
+		polyline(shapeElement)
+		{
+			return pathShape.polyline(...shapeElement.points)
+		},
+
+		polygon(shapeElement)
+		{
+			return pathShape.polygon(...shapeElement.points)
+		},
+
+		rect(shapeElement)
+		{
+			return pathShape.rectangle(
+				getProperty(shapeElement, 'x'),
+				getProperty(shapeElement, 'y'),
+				getProperty(shapeElement, 'width'),
+				getProperty(shapeElement, 'height'),
+				getProperty(shapeElement, 'rx'),
+				getProperty(shapeElement, 'ry')
+			)
+		},
+
+		ellipse(shapeElement)
+		{
+			return pathShape.ellipse(
+				getProperty(shapeElement, 'cx'),
+				getProperty(shapeElement, 'cy'),
+				getProperty(shapeElement, 'rx'),
+				getProperty(shapeElement, 'ry')
+			)
+		},
+
+		circle(shapeElement)
+		{
+			pathShape.circle(
+				getProperty(shapeElement, 'cx'),
+				getProperty(shapeElement, 'cy'),
+				getProperty(shapeElement, 'r')
+			)
+		},
+	}
+
+	const shapeElements = element.tagName.toLowerCase() in shapeMap ? [ element ] :
+		element.querySelectorAll(Object.keys(shapeMap).join(','))
+
+	for (let shapeElement of shapeElements)
 	{
-		let path = {}
-		switch(shapeElement.tagName.toLowerCase())
+		const shapeName = shapeElement.tagName.toLowerCase()
+
+		if (shapeName in shapeMap)
 		{
-			case 'line':
+			const path = shapeMap[shapeName](shapeElement)
+			const pathString = pathEncoder(path)
+			const attributes = { d: pathString }
+
+			for(let attribute of shapeElement.attributes)
 			{
-				path = pathShape.line(
-					getProperty(shapeElement, 'x1'),
-					getProperty(shapeElement, 'y1'),
-					getProperty(shapeElement, 'x2'),
-					getProperty(shapeElement, 'y2')
-				)
+				const name = attribute.nodeName
+				const value = attribute.nodeValue
+
+				// Avoid dimensional properties
+				if(!/^(x|y|x1|y1|x2|y2|width|height|r|rx|ry|cx|cy|points|d)$/.test(name))
+				{
+					attributes[name] = value
+				}
 			}
-			break
-			case 'polyline':
-			{
-				path = pathShape.polyline(...shapeElement.points)
-			}
-			break
-			case 'polygon':
-			{
-				path = pathShape.polygon(...shapeElement.points)
-			}
-			break
-			case 'rect':
-			{
-				path = pathShape.rectangle(
-					getProperty(shapeElement, 'x'),
-					getProperty(shapeElement, 'y'),
-					getProperty(shapeElement, 'width'),
-					getProperty(shapeElement, 'height'),
-					getProperty(shapeElement, 'rx'),
-					getProperty(shapeElement, 'ry')
-				)
-			}
-			break
-			case 'ellipse':
-			{
-				path = pathShape.ellipse(
-					getProperty(shapeElement, 'cx'),
-					getProperty(shapeElement, 'cy'),
-					getProperty(shapeElement, 'rx'),
-					getProperty(shapeElement, 'ry')
-				)
-			}
-			break
-			case 'circle':
-			{
-				path = pathShape.circle(
-					getProperty(shapeElement, 'cx'),
-					getProperty(shapeElement, 'cy'),
-					getProperty(shapeElement, 'r')
-				)
-			}
-			break
+
+			const pathElement = createElement('path', attributes)
+			shapeElement.parentNode.replaceChild(pathElement, shapeElement)
 		}
-
-		const pathString = pathEncoder(path)
-		const attributes = { d: pathString }
-
-		for(let attribute of shapeElement.attributes)
-		{
-			const name = attribute.nodeName
-			const value = attribute.nodeValue
-
-			// Avoid dimensional properties
-			if(!/^(x|y|x1|y1|x2|y2|width|height|r|rx|ry|cx|cy|points|d)$/.test(name))
-			{
-				attributes[name] = value
-			}
-		}
-
-		const pathElement = createElement('path', attributes)
-		shapeElement.parentNode.replaceChild(pathElement, shapeElement)
 	}
 }
 
 export function preparePaths(element, curveType='q')
 {
-	const pathElements = element.querySelectorAll('path')
+	const pathElements = element.tagName.toLowerCase() === 'path' ? [ element ] :
+		element.querySelectorAll('path')
 
-	for(let pathElement of pathElements)
+	for (let pathElement of pathElements)
 	{
 		let pathString = getProperty(pathElement, 'd')
 		let path = pathParser(pathString)
