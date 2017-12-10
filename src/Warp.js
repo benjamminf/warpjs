@@ -16,8 +16,7 @@ export default class Warp
 		shapesToPaths(element)
 		preparePaths(element, curveType)
 
-		const pathElements = element.tagName.toLowerCase() === 'path' ? [ element ] :
-			Array.from(element.querySelectorAll('path'))
+		const pathElements = Array.from(element.querySelectorAll('path'))
 
 		this.paths = pathElements.map(pathElement =>
 		{

@@ -65,8 +65,7 @@ export function shapesToPaths(element)
 		},
 	}
 
-	const shapeElements = element.tagName.toLowerCase() in shapeMap ? [ element ] :
-		element.querySelectorAll(Object.keys(shapeMap).join(','))
+	const shapeElements = element.querySelectorAll(Object.keys(shapeMap).join(','))
 
 	for (let shapeElement of shapeElements)
 	{
@@ -98,8 +97,7 @@ export function shapesToPaths(element)
 
 export function preparePaths(element, curveType='q')
 {
-	const pathElements = element.tagName.toLowerCase() === 'path' ? [ element ] :
-		element.querySelectorAll('path')
+	const pathElements = element.querySelectorAll('path')
 
 	for (let pathElement of pathElements)
 	{
