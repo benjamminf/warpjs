@@ -57,7 +57,7 @@ export function shapesToPaths(element)
 
 		circle(shapeElement)
 		{
-			pathShape.circle(
+			return pathShape.circle(
 				getProperty(shapeElement, 'cx'),
 				getProperty(shapeElement, 'cy'),
 				getProperty(shapeElement, 'r')
