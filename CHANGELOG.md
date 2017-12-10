@@ -1,6 +1,9 @@
 ## Changelog
 
-### v1.0.4
+### v1.0.5
+- `Fixed` Fixed bug where transforms were failing when compiling with later versions of Babel
+
+#### v1.0.4
 - `Fixed` Disabled ability to initialise Warp objects on single SVG shapes as it prevented retaining a reference to the root element
 
 #### v1.0.3
