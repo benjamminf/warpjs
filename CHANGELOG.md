@@ -1,6 +1,9 @@
 ## Changelog
 
-### v1.0.6
+### v1.0.7
+- `Improved` Library now uses UMD for compatibility with most environments
+
+#### v1.0.6
 - `Fixed` Fixed error in Safari when copying attributes during shape-path conversion
 
 #### v1.0.5
