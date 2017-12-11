@@ -1,6 +1,9 @@
 ## Changelog
 
-### v1.0.5
+### v1.0.6
+- `Fixed` Fixed error in Safari when copying attributes during shape-path conversion
+
+#### v1.0.5
 - `Fixed` Fixed bug where transforms were failing when compiling with later versions of Babel
 
 #### v1.0.4
