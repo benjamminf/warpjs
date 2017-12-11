@@ -77,13 +77,13 @@ export function shapesToPaths(element)
 			const pathString = pathEncoder(path)
 			const attributes = { d: pathString }
 
-			for(let attribute of shapeElement.attributes)
+			for (let attribute of Array.from(shapeElement.attributes))
 			{
 				const name = attribute.nodeName
 				const value = attribute.nodeValue
 
 				// Avoid dimensional properties
-				if(!/^(x|y|x1|y1|x2|y2|width|height|r|rx|ry|cx|cy|points|d)$/.test(name))
+				if (!/^(x|y|x1|y1|x2|y2|width|height|r|rx|ry|cx|cy|points|d)$/.test(name))
 				{
 					attributes[name] = value
 				}
@@ -97,7 +97,7 @@ export function shapesToPaths(element)
 
 export function preparePaths(element, curveType='q')
 {
-	const pathElements = element.querySelectorAll('path')
+	const pathElements = Array.from(element.querySelectorAll('path'))
 
 	for (let pathElement of pathElements)
 	{
