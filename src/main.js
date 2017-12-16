@@ -1,2 +1,2 @@
 import Warp from './Warp'
-export default Warp
+module.exports = Warp
