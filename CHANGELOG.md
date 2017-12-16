@@ -1,6 +1,10 @@
 ## Changelog
 
-### v1.0.7
+### v1.0.8
+- `Improved` New logo
+- `Fixed` Fixed issue exposing Warp object to window context
+
+#### v1.0.7
 - `Improved` Library now uses UMD for compatibility with most environments
 
 #### v1.0.6
