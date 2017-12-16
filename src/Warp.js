@@ -7,6 +7,14 @@ import warpTransform from './warp/transform'
 import warpInterpolate from './warp/interpolate'
 import warpExtrapolate from './warp/extrapolate'
 
+// Utility function for creating a single transformer from an array of transformers
+function normalTransformer(transformer)
+{
+	return Array.isArray(transformer) ?
+		points => transformer.reduce((p, t) => t(p), points) :
+		transformer
+}
+
 export default class Warp
 {
 	constructor(element, curveType='q')
@@ -36,13 +44,13 @@ export default class Warp
 		}
 	}
 
-	transform(transformers)
+	transform(transformer)
 	{
-		transformers = Array.isArray(transformers) ? transformers : [ transformers ]
+		transformer = normalTransformer(transformer)
 
 		for (let path of this.paths)
 		{
-			path.pathData = warpTransform(path.pathData, transformers)
+			path.pathData = warpTransform(path.pathData, transformer)
 		}
 
 		this.update()
@@ -50,6 +58,7 @@ export default class Warp
 
 	interpolate(threshold, transformer=null)
 	{
+		transformer = transformer ? normalTransformer(transformer) : null
 		let didWork = false
 
 		function deltaFunction(points)
@@ -85,6 +94,7 @@ export default class Warp
 
 	extrapolate(threshold, transformer=null)
 	{
+		transformer = transformer ? normalTransformer(transformer) : null
 		let didWork = false
 
 		function deltaFunction(points)

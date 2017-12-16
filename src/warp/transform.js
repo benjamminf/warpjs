@@ -1,7 +1,7 @@
 import pathTransform from '../path/transform'
 import { pointGroups } from '../path/utils'
 
-export default function transform(path, transformers)
+export default function transform(path, transformer)
 {
 	return pathTransform(path, (segment) =>
 	{
@@ -13,7 +13,7 @@ export default function transform(path, transformers)
 			{
 				const extendedPoints = (segment.extended ? segment.extended[i] : null) || []
 				const oldPoints = [ segment[x], segment[y], ...extendedPoints ]
-				const newPoints = transformers.reduce((points, transformer) => transformer(points), oldPoints)
+				const newPoints = transformer(oldPoints)
 
 				if (newPoints.length < 2)
 				{
