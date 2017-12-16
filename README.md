@@ -1,9 +1,9 @@
 [![Build Status][travis-img]][travis-url]
 [![Coverage Status][coveralls-img]][coveralls-url]
 
-<img alt="warp.js" src="https://raw.githubusercontent.com/benjamminf/warpjs/master/warp.png" width="246" height="75">
+<img alt="warp.js" src="https://raw.githubusercontent.com/benjamminf/warpjs/master/warp.png" width="214" height="61">
 
-Warp, distort, bend, twist and smudge your scalable vector graphics in the browser. `warp.js` allows you to feed in any
+Distort, bend, twist and smudge your scalable vector graphics in the browser. `warp.js` allows you to feed in any
 SVG file and apply any kind of complex transformation.
 
 ## Installation
@@ -25,7 +25,7 @@ const svg = document.getElementById('svg-element')
 const warp = new Warp(svg)
 
 warp.interpolate(4)
-warp.transform(([x, y]) => [x, y + 4 * Math.sin(x / 16)])
+warp.transform(([ x, y ]) => [ x, y + 4 * Math.sin(x / 16) ])
 ```
 [Run on CodePen &rarr;](http://codepen.io/benjamminf/pen/NpZLeb)
 
@@ -35,12 +35,12 @@ This example creates a wave effect. Try playing with the values to see how it wo
 
 ```js
 warp.interpolate(4)
-warp.transform(([x, y]) => [x, y, y])
+warp.transform(([ x, y ]) => [ x, y, y ])
 
 let offset = 0
 function animate()
 {
-    warp.transform(([x, y, oy]) => [x, oy + 4 * Math.sin(x / 16 + offset), oy])
+    warp.transform(([ x, y, oy ]) => [ x, oy + 4 * Math.sin(x / 16 + offset), oy ])
     offset += 0.1
     requestAnimationFrame(animate)
 }
