@@ -48,7 +48,7 @@ export default class Warp
 		this.update()
 	}
 
-	interpolate(threshold)
+	interpolate(threshold, transformer=null)
 	{
 		let didWork = false
 
@@ -67,13 +67,23 @@ export default class Warp
 
 		for (let path of this.paths)
 		{
-			path.pathData = warpInterpolate(path.pathData, threshold, deltaFunction)
+			if (transformer)
+			{
+				const transformed = warpTransform(path.pathData, p => [ ...transformer(p).slice(0, 2), ...p ])
+				const interpolated = warpInterpolate(transformed, threshold, deltaFunction)
+
+				path.pathData = warpTransform(interpolated, p => p.slice(2))
+			}
+			else
+			{
+				path.pathData = warpInterpolate(path.pathData, threshold, deltaFunction)
+			}
 		}
 
 		return didWork
 	}
 
-	extrapolate(threshold)
+	extrapolate(threshold, transformer=null)
 	{
 		let didWork = false
 
@@ -92,77 +102,17 @@ export default class Warp
 
 		for (let path of this.paths)
 		{
-			path.pathData = warpExtrapolate(path.pathData, threshold, deltaFunction)
-		}
-
-		return didWork
-	}
-
-	preInterpolate(transformer, threshold)
-	{
-		let didWork = false
-
-		function deltaFunction(points)
-		{
-			const linearPoints = [
-				points[0].slice(0, 2),
-				points[points.length - 1].slice(0, 2),
-			]
-
-			const delta = euclideanDistance(linearPoints)
-			didWork = didWork || (delta > threshold)
-
-			return delta
-		}
-
-		for (let path of this.paths)
-		{
-			const transformed = warpTransform(path.pathData, function(points)
+			if (transformer)
 			{
-				const newPoints = transformer(points.slice(0, 2))
-				newPoints.push(...points)
+				const transformed = warpTransform(path.pathData, p => [ ...transformer(p).slice(0, 2), ...p ])
+				const extrapolated = warpExtrapolate(transformed, threshold, deltaFunction)
 
-				return newPoints
-			})
-
-			const interpolated = warpInterpolate(transformed, threshold, deltaFunction)
-
-			path.pathData = warpTransform(interpolated, points => points.slice(2))
-		}
-
-		return didWork
-	}
-
-	preExtrapolate(transformer, threshold)
-	{
-		let didWork = false
-
-		function deltaFunction(points)
-		{
-			const linearPoints = [
-				points[0].slice(0, 2),
-				points[points.length - 1].slice(0, 2),
-			]
-			
-			const delta = euclideanDistance(linearPoints)
-			didWork = didWork || (delta <= threshold)
-
-			return delta
-		}
-
-		for (let path of this.paths)
-		{
-			const transformed = warpTransform(path.pathData, function(points)
+				path.pathData = warpTransform(extrapolated, p => p.slice(2))
+			}
+			else
 			{
-				const newPoints = transformer(points.slice(0, 2))
-				newPoints.push(...points)
-
-				return newPoints
-			})
-
-			const extrapolated = warpExtrapolate(transformed, threshold, deltaFunction)
-
-			path.pathData = warpTransform(extrapolated, points => points.slice(2))
+				path.pathData = warpExtrapolate(path.pathData, threshold, deltaFunction)
+			}
 		}
 
 		return didWork
