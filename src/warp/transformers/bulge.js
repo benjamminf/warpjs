@@ -1,6 +1,6 @@
-export default function bulgeTransformerFactory(weight, x=0, y=0)
+export default function bulgeFactory(radius, weight, cx=0, cy=0)
 {
-	return function bulgeTransformer([ x, y, ...points ])
+	return function bulge([ x, y, ...points ])
 	{
 		return [
 			x,

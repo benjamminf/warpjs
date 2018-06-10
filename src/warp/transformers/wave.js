@@ -1,6 +1,6 @@
 const modes = {
-	sine: (t, l, a, o) => a * Math.sin((2 * Math.PI * t + o) / l),
-	square: (t, l, a, o, d=0.5) => (t - o) % l < d * l ? a : -a,
+	sine: (t, l, a, o) => a * Math.sin((2 * Math.PI * (t + o)) / l),
+	square: (t, l, a, o, d=0.5) => ((t - o) % l + l) % l < d * l ? a : -a,
 	//triangle: (t, l, a, o) => ,
 	//sawtooth: (t, l, a, o) => ,
 }
@@ -14,7 +14,7 @@ const modes = {
  * @param mode
  * @returns {function(*[]): *[]}
  */
-export default function waveFactory(wavelength, amplitude, angle=90, offset=0, mode='sine')
+export default function waveFactory(wavelength, amplitude, angle=0, offset=0, mode='sine')
 {
 	const modeFunction = typeof mode === 'function' ? mode : modes[mode]
 
