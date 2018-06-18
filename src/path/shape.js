@@ -21,7 +21,7 @@ export function polyline(...points)
 export function polygon(...points)
 {
 	const path = polyline(...points)
-	path.append({ type: 'z', relative: false })
+	path.push({ type: 'z', relative: false })
 
 	return path
 }

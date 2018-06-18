@@ -25,12 +25,12 @@ export function shapesToPaths(element)
 
 		polyline(shapeElement)
 		{
-			return pathShape.polyline(...shapeElement.points)
+			return pathShape.polyline(...Array.from(shapeElement.points))
 		},
 
 		polygon(shapeElement)
 		{
-			return pathShape.polygon(...shapeElement.points)
+			return pathShape.polygon(...Array.from(shapeElement.points))
 		},
 
 		rect(shapeElement)
