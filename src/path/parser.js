@@ -9,7 +9,7 @@ export default function parser(pathString)
 
 	let segmentMatch
 	segmentExpr.lastIndex = 0
-	
+
 	while( (segmentMatch = segmentExpr.exec(pathString)) )
 	{
 		const type = segmentMatch[1].toLowerCase()
@@ -20,7 +20,7 @@ export default function parser(pathString)
 
 		if(numbers.length < schema.length)
 		{
-			throw new Error(`Malformed path data: type "${type}" has ${numbers.length} arguments, expected ${scheme.length}`)
+			throw new Error(`Malformed path data: type "${type}" has ${numbers.length} arguments, expected ${schema.length}`)
 		}
 
 		if(schema.length > 0)

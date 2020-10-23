@@ -7,7 +7,7 @@ describe('parser()', function()
 	{
 		assert.deepEqual([], parser(' '))
 	})
-	
+
 	it('should parse space separated path string', function()
 	{
 		assert.deepEqual([
@@ -65,5 +65,19 @@ describe('parser()', function()
 			{ type: 'l', relative: false, x: 2, y: 3 },
 			{ type: 'z', relative: false },
 		], parser('M 0,1 L 2,3 Z'))
+	})
+
+	it('should detect too few arguments', function()
+	{
+		assert.throws(() => {
+			parser('A 110 110 0 0')
+		}, {message: /Malformed path data/})
+	})
+
+	it('should detect too many arguments', function()
+	{
+		assert.throws(() => {
+			parser('a 110 110 0 0 1 55 -7 42')
+		}, {message: /Malformed path data/})
 	})
 })
