@@ -32,7 +32,8 @@ export default function parser(pathString)
 
 			for(let i = 0; i < numbers.length / schema.length; i++)
 			{
-				const segmentData = { type, relative }
+				const segmentType = (type !== 'm' || i === 0) ? type : 'l'
+				const segmentData = { type: segmentType, relative }
 
 				for(let j = 0; j < schema.length; j++)
 				{
